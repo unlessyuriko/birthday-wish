@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { FitArt } from '../components/FitArt';
 import { Bear } from '../components/Art';
 import { CakeAuto } from '../components/CakeAuto';
 import { Confetti, SceneHeading, useReducedMotion } from '../components/ui';
@@ -18,10 +19,10 @@ export function Scene4({ state, dispatch }: SceneProps) {
   return (
     <section className="scene" aria-label="Birthday wish">
       {state.confettiPending && !reduced && <Confetti onDone={() => dispatch({ type: 'confettiDone' })} />}
-      <div className="hero-art">
+      <FitArt>
         <Bear size={72} className="bear-bob" />
         <CakeAuto out={state.candlesOut} level={level / 100} />
-      </div>
+      </FitArt>
       <SceneHeading>A tiny cake. A very big wish.</SceneHeading>
       {!state.wishReady && (
         <>

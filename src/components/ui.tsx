@@ -54,16 +54,17 @@ export function Choices({
   onPick,
 }: {
   label: string;
-  options: Array<{ id: string; label: string }>;
+  options: Array<{ id: string; label: string; icon?: ReactNode }>;
   value?: string;
   onPick: (id: string) => void;
 }) {
   return (
-    <div role="group" aria-label={label} className={`choices ${options.length === 4 ? 'cols2' : ''}`}>
+    <div role="group" aria-label={label} className={`choices ${options.length === 4 ? 'cols2' : ''} ${options.some((o) => o.icon) ? 'tiles' : ''}`}>
       {options.map((o) => (
         <button key={o.id} type="button" className="choice" aria-pressed={value === o.id} onClick={() => onPick(o.id)}>
           <span className="choice-check" aria-hidden="true">{value === o.id ? '♥' : ''}</span>
-          {o.label}
+          {o.icon && <span className="choice-icon" aria-hidden="true">{o.icon}</span>}
+          <span className="choice-label">{o.label}</span>
         </button>
       ))}
     </div>

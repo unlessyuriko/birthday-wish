@@ -153,3 +153,30 @@ export function AmbientHearts() {
     </div>
   );
 }
+
+/** Simple line icons for the decision tiles. Decorative (the label carries the meaning). */
+export function ChoiceIcon({ id }: { id: string }) {
+  const common = { width: 40, height: 40, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const, 'aria-hidden': true, focusable: false };
+  switch (id) {
+    case 'dinner':
+      return (<svg {...common}><path d="M6 3v8a2 2 0 0 0 2 2v8M10 3v6M6 3v6M16 21V3c-2 1.5-3 4-3 7 0 2 1 3 3 3" /></svg>);
+    case 'adventure':
+      return (<svg {...common}><circle cx="12" cy="12" r="9" /><path d="M15.5 8.5l-2 5-5 2 2-5z" /></svg>);
+    case 'hug':
+      return (<svg {...common}><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" /><path d="M4 21c2-2 4-2 5-1M20 21c-2-2-4-2-5-1" /></svg>);
+    case 'kiss':
+      return (<svg {...common}><path d="M3 12c2-3 5-4 9-2 4-2 7-1 9 2-2 4-5 6-9 6s-7-2-9-6z" /><path d="M3 12h18" /></svg>);
+    case 'present':
+      return (<svg {...common}><rect x="3" y="9" width="18" height="12" rx="1.5" /><path d="M2 9h20v-3H2zM12 6v15M12 6C10 2 6 3 7.5 5.5S12 6 12 6zM12 6c2-4 6-3 4.5-.5S12 6 12 6z" /></svg>);
+    case 'cake':
+      return (<svg {...common}><path d="M4 21h16M5 21v-6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v6M5 17c2 2 3-2 5 0s3-2 5 0 3-2 4 0M12 13V9M12 9c-1.4-1-1.4-2.4 0-4 1.4 1.6 1.4 3 0 4z" /></svg>);
+    case 'me':
+      return (<svg {...common}><path d="M4 18l-1-10 5 4 4-7 4 7 5-4-1 10zM4 21h16" /></svg>);
+    case 'obviously-me':
+      return (<svg {...common}><path d="M12 3l2.4 5.6L20 9.3l-4.4 3.8 1.4 5.9L12 15.8 7 19l1.4-5.9L4 9.3l5.6-.7z" /></svg>);
+    case 'is-this-a-question':
+      return (<svg {...common}><path d="M4 5h16v10H10l-4 4v-4H4z" /><path d="M10.3 8.6a1.9 1.9 0 1 1 2.6 1.8c-.6.3-.9.7-.9 1.3M12 13h.01" /></svg>);
+    default:
+      return (<svg {...common}><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" /></svg>);
+  }
+}

@@ -31,6 +31,9 @@ Both were rendered with three.js in desktop Chrome (software WebGL) and checked 
 ## Full-height layout (added)
 The card now fills the screen on phones, with the picture centred in the free space and the main button at the bottom. Memory cards and the step 6 card preview are sized from the measured free space, so any photo shape fits without scrolling. Measured on the production build at 390x844, 390x664, 375x667, 360x640, 412x780 and 320x568: every step, all three flipped memory cards and the last step fit without scrolling (after the entrance animation settles). Emulated viewports, not physical devices.
 
+## Decision card, self-fitting art, yellow roses (added)
+Step 2 uses icon tiles in a pink decision card that shares the available height; the cake, gift and envelope art scale themselves to the free space (no empty bands, no overlap). Re-measured after these changes at 390x844, 390x664, 375x667, 360x640, 412x780 and 320x568: no step scrolls. Screens were also reviewed by screenshot at 570x880. The bouquet roses are now golden yellow (3D and the SVG fallback); colour checked by screenshot only.
+
 ## Not verified
 - Real iOS Safari, real Android Chrome, messaging-app browsers, and real download behaviour on mobile devices (the fallback "press and hold to save" path is implemented but untested).
 - Export with a real share photo (none supplied), long names/captions on the card (layout logic is unit-tested, not visually checked).

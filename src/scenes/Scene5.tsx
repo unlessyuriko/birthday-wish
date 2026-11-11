@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Bear, GiftBox } from '../components/Art';
+import { FitArt } from '../components/FitArt';
 import { Photo } from '../components/Photo';
 import { SceneHeading } from '../components/ui';
 import { surpriseIsValid } from '../validation/validate';
@@ -19,10 +20,10 @@ export function Scene5({ state, dispatch, config, onMediaPlaying }: Props) {
   };
   return (
     <section className={`scene ${state.giftOpen ? 'gift-open' : ''}`} aria-label="A gift from me">
-      <div className="hero-art">
+      <FitArt>
         <Bear size={72} className="bear-bob" />
         <GiftBox open={state.giftOpen} />
-      </div>
+      </FitArt>
       <SceneHeading>Okay. This part is from me.</SceneHeading>
       {!state.giftOpen ? (
         <button type="button" className="btn primary" onClick={() => dispatch({ type: 'openGift' })}>

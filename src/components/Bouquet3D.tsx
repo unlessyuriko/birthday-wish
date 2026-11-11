@@ -94,21 +94,21 @@ export function Bouquet3D({ onFail }: Props) {
 
     // --- Roses: a dense dome of axes, outermost ring first so inner ones overlap
     const variants: Array<{ g: ReturnType<typeof buildRose>; m: MeshStandardMaterial }> = [];
-    const redMat = new MeshStandardMaterial({ vertexColors: true, side: DoubleSide, roughness: 0.55, metalness: 0 });
+    const redMat = new MeshStandardMaterial({ vertexColors: true, side: DoubleSide, roughness: 0.55, metalness: 0, emissive: new Color('#ffcf33'), emissiveIntensity: 0.14 });
     const peachMat = new MeshStandardMaterial({ vertexColors: true, side: DoubleSide, roughness: 0.6, metalness: 0 });
     disposables.push(redMat, peachMat);
-    const tones: RoseTone[] = ['red', 'red', 'red', 'red', 'red', 'blush', 'blush'];
+    const tones: RoseTone[] = ['gold', 'gold', 'honey', 'gold', 'honey', 'butter', 'butter'];
     tones.forEach((tone, i) => {
       const g = buildRose(13 + i * 7, tone, 0.42);
       disposables.push(g);
-      variants.push({ g, m: tone === 'red' ? redMat : peachMat });
+      variants.push({ g, m: redMat });
     });
 
     // A tight bud at the heart of each rose hides the gap where the inner petals meet.
     const coreGeo = new SphereGeometry(0.17, 14, 10);
     disposables.push(coreGeo);
-    const coreRed = new MeshStandardMaterial({ color: new Color('#5a0715'), roughness: 0.6 });
-    const corePeach = new MeshStandardMaterial({ color: new Color('#c8706f'), roughness: 0.6 });
+    const coreRed = new MeshStandardMaterial({ color: new Color('#d79b00'), roughness: 0.6 });
+    const corePeach = new MeshStandardMaterial({ color: new Color('#e3b03a'), roughness: 0.6 });
     disposables.push(coreRed, corePeach);
 
     const dome: Array<{ theta: number; phi: number; s: number }> = [];
@@ -130,7 +130,7 @@ export function Bouquet3D({ onFail }: Props) {
       const holder = new Group();
       holder.position.copy(dir.clone().multiplyScalar(R)).add(new Vector3(0, 0.1, -1.55));
       holder.quaternion.copy(new Quaternion().setFromUnitVectors(up, dir));
-      const blush = blushSlots.has(i);
+      const blush = blushSlots.has(i); // the paler butter-yellow roses
       const v = blush ? variants[5 + (i % 2)] : variants[i % 5];
       const rose = new Mesh(v.g, v.m);
       rose.rotation.y = i * 1.9;

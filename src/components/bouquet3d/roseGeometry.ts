@@ -1,12 +1,14 @@
 import { BufferGeometry, Color, Float32BufferAttribute } from 'three';
 
-export type RoseTone = 'red' | 'peach' | 'blush';
+export type RoseTone = 'gold' | 'honey' | 'butter';
 
 const PALETTE: Record<RoseTone, { base: string; mid: string; tip: string }> = {
-  red: { base: '#2a0109', mid: '#a10e2a', tip: '#e8405e' },
-  peach: { base: '#b9575a', mid: '#f4978e', tip: '#ffd6c4' },
-  // Two-tone pink rose with pale, almost white petal edges (as in the reference bouquet)
-  blush: { base: '#c8506a', mid: '#f08aa0', tip: '#fff3ea' },
+  // Golden yellow roses (the main colour)
+  gold: { base: '#c98d00', mid: '#fcc81c', tip: '#ffe866' },
+  // Deeper honey-yellow, for variety
+  honey: { base: '#d09400', mid: '#f7bd12', tip: '#ffdb52' },
+  // Paler butter-yellow roses with creamy petal edges
+  butter: { base: '#dcac32', mid: '#fbdf72', tip: '#fff7cf' },
 };
 
 const GOLDEN = 2.399963; // golden angle in radians
@@ -85,7 +87,7 @@ export function buildRose(seed: number, tone: RoseTone, open = 0.5): BufferGeome
         const pz = zz + r0;
         pos.push(px * ca + pz * sa, py, -px * sa + pz * ca);
 
-        const shade = 0.62 + 0.38 * t; // inner petals sit in shadow
+        const shade = 0.8 + 0.2 * t; // inner petals sit in a soft shadow
         tmp.lerpColors(cBase, cMid, smooth(0, 0.55, v));
         const edge = Math.abs(u);
         const lightK = Math.min(1, smooth(0.55, 1, v) * 0.7 + edge * edge * 0.1 * v) * (0.25 + 0.6 * t);

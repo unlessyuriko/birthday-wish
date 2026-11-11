@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Bear, Envelope, Heartbeat, HeartBurst } from '../components/Art';
 import { ChaseButton } from '../components/ChaseButton';
+import { FitArt } from '../components/FitArt';
 import { BouquetAuto, prefetchBouquet3D } from '../components/BouquetAuto';
 import { Reaction, SceneHeading } from '../components/ui';
 import { gateQuestions } from '../content/copy';
@@ -25,13 +26,13 @@ export function Scene1({ state, dispatch, config }: SceneProps) {
 
   return (
     <section className="scene" aria-label="Special delivery">
-      <div className={`hero-art ${state.envelopeOpen ? 'open' : 'compact'}`}>
+      <FitArt className={state.envelopeOpen ? 'open' : 'compact'}>
         {!state.envelopeOpen && <Bear size={56} className="bear-bob" />}
         <div className="env-scale">
           <Envelope open={state.envelopeOpen}>{state.envelopeOpen && <BouquetAuto />}</Envelope>
         </div>
         <p className="envelope-to">For {config.recipient.nickname}</p>
-      </div>
+      </FitArt>
       <SceneHeading>Special delivery for the birthday girl</SceneHeading>
       {!state.envelopeOpen ? (
         <>

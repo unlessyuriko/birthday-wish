@@ -12,7 +12,7 @@ function Rose({ x, y, r, rot, tone, i }: { x: number; y: number; r: number; rot:
   const ring = (n: number, scale: number, offset: number, fill: string) =>
     Array.from({ length: n }, (_, k) => (
       <g key={`${fill}${k}`} transform={`rotate(${offset + (360 / n) * k}) scale(${scale}) translate(0 -4)`}>
-        <path d={PETAL} fill={`url(#${tone}-${fill})`} stroke="#5e0b22" strokeOpacity="0.4" strokeWidth="1.1" />
+        <path d={PETAL} fill={`url(#${tone}-${fill})`} stroke="#6b4300" strokeOpacity="0.4" strokeWidth="1.1" />
         <path d="M-20 -31 C -9 -38 9 -38 20 -31" fill="none" stroke="#fff" strokeOpacity="0.38" strokeWidth="3.4" strokeLinecap="round" />
       </g>
     ));
@@ -23,7 +23,7 @@ function Rose({ x, y, r, rot, tone, i }: { x: number; y: number; r: number; rot:
         {ring(5, 0.74, 30, 'm')}
         {ring(4, 0.5, 12, 'n')}
         <circle r="8" fill={`url(#${tone}-n)`} />
-        <path d="M0 0 c 3 -5 10 -2 8 4 c -2 6 -11 4 -12 -3 c -1 -8 8 -11 14 -6" fill="none" stroke="#5e0b22" strokeOpacity="0.8" strokeWidth="2.4" strokeLinecap="round" />
+        <path d="M0 0 c 3 -5 10 -2 8 4 c -2 6 -11 4 -12 -3 c -1 -8 8 -11 14 -6" fill="none" stroke="#6b4300" strokeOpacity="0.8" strokeWidth="2.4" strokeLinecap="round" />
       </g>
     </g>
   );
