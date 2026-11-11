@@ -48,7 +48,7 @@ export const config: BirthdayConfig = {
   // surprise: { confirmed: true, title: '...', description: '...', dateLabel: '...', timeLabel: '...', locationLabel: '...' },
 
   // Files go in public/assets/audio and public/assets/video. Provide a transcript for voice notes.
-  media: undefined,
+  media: { musicSrc: 'assets/audio/romantic-piano.mp3' },
 
   // Need at least 3 to enable the Emergency compliments button.
   compliments: [
@@ -57,5 +57,5 @@ export const config: BirthdayConfig = {
     '[Add another specific, affectionate compliment.]',
   ],
 
-  features: { relationshipJoke: true, emergencyCompliments: true, music: false },
+  features: { relationshipJoke: true, emergencyCompliments: true, music: true },
 };

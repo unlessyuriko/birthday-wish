@@ -31,6 +31,10 @@ Everything personal is in **one file: `src/content/birthday.config.ts`**.
 4. Use `focalPoint` (0 to 1) so faces are not cropped.
 5. Audio goes in `public/assets/audio/`, video in `public/assets/video/`. Music is off by default and only starts after the sound toggle is pressed. Voice notes need a `transcript`; videos should have a captions file.
 
+## Background music
+
+`public/assets/audio/romantic-piano.mp3` is an original 90 second instrumental (soft piano and strings) generated with ElevenLabs Music v2.5 through Higgsfield, so there are no third-party song rights to clear. It is off by default, starts only when she taps **Sound: off**, loops quietly, and pauses while a voice note or video plays. To swap it, replace the file (keep it under about 3 MB) or change `media.musicSrc`. To remove music, set `features.music: false`.
+
 ## Deploy on Vercel
 
 `vercel.json` is already set up (Vite preset, `dist` output, noindex and security headers, long caching for hashed assets). `public/robots.txt` disallows crawlers.

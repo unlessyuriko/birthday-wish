@@ -15,6 +15,9 @@ Full click-through plus horizontal-overflow check on all seven scenes, using Pla
 ## Candle slider (added)
 Drag-to-blow slider checked with a real mouse drag in Chromium and WebKit: letting go at 50 percent springs back to 0, a full drag blows the candles out once, and the smoke loops afterwards. Touch dragging on a real phone and keyboard (End, Enter, Space) are implemented but not tested on devices.
 
+## Music (added)
+The Sound toggle was checked in Chromium and WebKit: audio starts only after the tap, loops, plays at volume 0.45, and pauses when toggled off. Music pausing during voice note or video playback is implemented but untested (no media supplied). Listening quality was not assessed by me.
+
 ## Not verified
 - Real iOS Safari, real Android Chrome, messaging-app browsers, and real download behaviour on mobile devices (the fallback "press and hold to save" path is implemented but untested).
 - Export with a real share photo (none supplied), long names/captions on the card (layout logic is unit-tested, not visually checked).

@@ -32,6 +32,7 @@ export function App() {
   useEffect(() => {
     const a = audioRef.current;
     if (!a) return;
+    a.volume = 0.45; // quiet background level
     if (musicWanted && !mediaPlaying) {
       a.play().then(() => setMusicBlocked(false), () => setMusicBlocked(true));
     } else a.pause();
