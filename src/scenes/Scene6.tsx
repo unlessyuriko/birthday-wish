@@ -31,7 +31,7 @@ export function Scene6({ state, dispatch, config, onMediaPlaying }: Props) {
       ) : (
         <>
           {config.heroPhotoId && <div className="polaroid"><Photo config={config} photoId={config.heroPhotoId} /></div>}
-          <article className="letter" tabIndex={0} aria-label="Your birthday message">
+          <article className="letter" tabIndex={0} autoFocus aria-label="Your birthday message">
             {config.letter.paragraphs.map((p, i) => (
               <p key={i}>{p}</p>
             ))}

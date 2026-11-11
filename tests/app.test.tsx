@@ -12,8 +12,15 @@ describe('full journey (jsdom, click only)', () => {
     render(<App />);
     expect(screen.getByText(/A little surprise, 1 of 7/)).toBeTruthy();
     expect(screen.queryByRole('button', { name: 'Open my envelope' })).toBeNull();
-    click('Just a random visitor');
-    expect(screen.getByText(/Nice try, birthday girl/)).toBeTruthy();
+    click("Yes, that's me");
+    expect(screen.getByText(/The reason for this entire app/)).toBeTruthy();
+    // The runaway No: with no pointer (keyboard or reduced motion) it cycles its lines, then gives up.
+    click('No');
+    expect(screen.getByText('Renewal is not optional.')).toBeTruthy();
+    click('No');
+    click('No');
+    click('Fine, renew it');
+    click("I'm ready");
     click('Open my envelope');
     click('Let me see');
 
@@ -55,6 +62,15 @@ describe('full journey (jsdom, click only)', () => {
     click("There's one little keepsake left");
     click('Replay my surprise');
     expect(screen.getByText(/1 of 7/)).toBeTruthy();
+  });
+});
+
+describe('runaway No never blocks', () => {
+  it('a No on every question still reaches the envelope', () => {
+    render(<App />);
+    const lastTaunts = [['No', 'No', 'No', 'Okay, fine. Yes.'], ['No', 'No', 'No', 'Fine, renew it'], ['Not ready', 'Not ready', 'Not ready', "Okay, I'm ready"]];
+    for (const seq of lastTaunts) seq.forEach((n) => click(n));
+    expect(screen.getByRole('button', { name: 'Open my envelope' })).toBeTruthy();
   });
 });
 

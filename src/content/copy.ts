@@ -1,9 +1,50 @@
 export type Option = { id: string; label: string; reaction: string };
 
-export const identityOptions: Option[] = [
-  { id: 'birthday-girl', label: 'The birthday girl', reaction: 'There she is. The reason for this entire app.' },
-  { id: 'cutest-girl', label: "The world's cutest girl", reaction: 'Identity confirmed. Confidence also confirmed.' },
-  { id: 'random-visitor', label: 'Just a random visitor', reaction: 'Nice try, birthday girl. Your surprise is right here.' },
+export type GateQuestion = {
+  id: string;
+  question: string;
+  yesLabel: string;
+  noLabel: string;
+  /** What the runaway No says each time it escapes. Its length is how many escapes it makes. */
+  taunts: string[];
+  /** Label on the No once it gives up. Pressing it counts as yes. */
+  giveUpLabel: string;
+  yesReaction: string;
+  caughtReaction: string;
+};
+
+/** The playful opening checks. There is no wrong answer: both buttons lead on. */
+export const gateQuestions: GateQuestion[] = [
+  {
+    id: 'birthday-girl',
+    question: 'Are you the birthday girl?',
+    yesLabel: "Yes, that's me",
+    noLabel: 'No',
+    taunts: ['Nice try.', 'Too slow!', 'Wrong answer, birthday girl.'],
+    giveUpLabel: 'Okay, fine. Yes.',
+    yesReaction: 'There she is. The reason for this entire app.',
+    caughtReaction: 'Identity confirmed. Confidence also confirmed.',
+  },
+  {
+    id: 'licence',
+    question: 'Your Favourite Person licence is valid until: forever. Renew it?',
+    yesLabel: 'Renew it',
+    noLabel: 'No',
+    taunts: ['Renewal is not optional.', 'I have the forms right here.', 'That button is not for you.'],
+    giveUpLabel: 'Fine, renew it',
+    yesReaction: 'Licence renewed. No refunds.',
+    caughtReaction: 'Licence renewed. Still no refunds.',
+  },
+  {
+    id: 'ready',
+    question: 'Are you ready for a suspiciously large amount of love?',
+    yesLabel: "I'm ready",
+    noLabel: 'Not ready',
+    taunts: ['Too late, it is already loaded.', 'The love is non-refundable.', 'Bold of you to try.'],
+    giveUpLabel: "Okay, I'm ready",
+    yesReaction: 'Excellent. Handing it over now.',
+    caughtReaction: 'Wise decision. Handing it over now.',
+  },
 ];
 
 export type Decision = { id: 'dateMood' | 'need' | 'spoiled'; question: string; options: Option[] };

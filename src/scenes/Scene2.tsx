@@ -9,7 +9,7 @@ export function Scene2({ state, dispatch }: SceneProps) {
   const picked = d.options.find((o) => o.id === value);
   const last = state.decisionIndex === TOTAL_DECISIONS - 1;
   return (
-    <section className="scene" aria-label="Today's very important decisions">
+    <section className="scene" aria-label="Today's very important decisions" key={state.decisionIndex}>
       <p className="eyebrow">Today's very important decisions</p>
       <p className="eyebrow soft">Decision {state.decisionIndex + 1} of {TOTAL_DECISIONS}</p>
       <SceneHeading focusKey={state.decisionIndex}>{d.question}</SceneHeading>

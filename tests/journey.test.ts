@@ -4,19 +4,20 @@ import { initialState, journeyReducer as r, type JourneyState } from '../src/sta
 const run = (s: JourneyState, ...a: Parameters<typeof r>[1][]) => a.reduce(r, s);
 
 describe('journey state', () => {
-  it('every identity choice allows the envelope, none verifies', () => {
-    for (const id of ['birthday-girl', 'cutest-girl', 'random-visitor']) {
-      const s = run(initialState, { type: 'chooseIdentity', id }, { type: 'openEnvelope' });
-      expect(s.envelopeOpen).toBe(true);
-      expect(s.identity).toBe(id);
-    }
-  });
-  it('cannot open the envelope or advance before choosing', () => {
+  const gated = (): JourneyState => run(initialState, { type: 'gateAnswered' }, { type: 'gateAnswered' }, { type: 'gateAnswered' });
+  it('the envelope only opens after all three gate questions', () => {
     expect(run(initialState, { type: 'openEnvelope' }).envelopeOpen).toBe(false);
+    expect(run(initialState, { type: 'gateAnswered' }, { type: 'openEnvelope' }).envelopeOpen).toBe(false);
+    expect(run(gated(), { type: 'openEnvelope' }).envelopeOpen).toBe(true);
+  });
+  it('the gate cannot go past three answers', () => {
+    expect(run(gated(), { type: 'gateAnswered' }).gate).toBe(3);
+  });
+  it('cannot open the envelope or advance before the gate is done', () => {
     expect(run(initialState, { type: 'next', from: 1 }).scene).toBe(1);
   });
   it('double clicking Continue advances only one scene', () => {
-    let s = run(initialState, { type: 'chooseIdentity', id: 'birthday-girl' }, { type: 'openEnvelope' });
+    let s = run(gated(), { type: 'openEnvelope' });
     s = run(s, { type: 'next', from: 1 }, { type: 'next', from: 1 });
     expect(s.scene).toBe(2);
   });

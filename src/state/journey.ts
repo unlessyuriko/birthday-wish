@@ -5,7 +5,8 @@ export type ApplicationState = 'none' | 'qualifications' | 'approved';
 
 export type JourneyState = {
   scene: number; // 1 to 7
-  identity?: string;
+  /** Number of gate questions answered (0 to 3). */
+  gate: number;
   envelopeOpen: boolean;
   decisionIndex: number; // 0 to 2
   prefs: Prefs;
@@ -20,9 +21,11 @@ export type JourneyState = {
 
 export const TOTAL_SCENES = 7;
 export const TOTAL_DECISIONS = 3;
+export const TOTAL_GATE = 3;
 
 export const initialState: JourneyState = {
   scene: 1,
+  gate: 0,
   envelopeOpen: false,
   decisionIndex: 0,
   prefs: {},
@@ -36,7 +39,7 @@ export const initialState: JourneyState = {
 };
 
 export type Action =
-  | { type: 'chooseIdentity'; id: string }
+  | { type: 'gateAnswered' }
   | { type: 'openEnvelope' }
   | { type: 'choosePref'; key: keyof Prefs; id: string }
   | { type: 'next'; from: number }
@@ -55,10 +58,10 @@ const PREF_KEYS: Array<keyof Prefs> = ['dateMood', 'need', 'spoiled'];
 
 export function journeyReducer(s: JourneyState, a: Action): JourneyState {
   switch (a.type) {
-    case 'chooseIdentity':
-      return s.scene === 1 ? { ...s, identity: a.id } : s;
+    case 'gateAnswered':
+      return s.scene === 1 && s.gate < TOTAL_GATE ? { ...s, gate: s.gate + 1 } : s;
     case 'openEnvelope':
-      return s.scene === 1 && s.identity ? { ...s, envelopeOpen: true } : s;
+      return s.scene === 1 && s.gate >= TOTAL_GATE ? { ...s, envelopeOpen: true } : s;
     case 'choosePref':
       return s.scene === 2 ? { ...s, prefs: { ...s.prefs, [a.key]: a.id } } : s;
     case 'next': {

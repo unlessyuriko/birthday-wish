@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { Bear, Cake } from '../components/Art';
 import { Confetti, SceneHeading, useReducedMotion } from '../components/ui';
 import type { SceneProps } from './types';
@@ -6,9 +6,7 @@ import type { SceneProps } from './types';
 export function Scene4({ state, dispatch }: SceneProps) {
   const reduced = useReducedMotion();
   const [level, setLevel] = useState(0);
-  const dragging = useRef(false);
   const release = () => {
-    dragging.current = false;
     // Let go before the end and the flames spring back, so it never feels stuck.
     if (!state.candlesOut) setLevel((l) => (l >= 100 ? l : 0));
   };
@@ -46,10 +44,10 @@ export function Scene4({ state, dispatch }: SceneProps) {
               max={100}
               step={1}
               value={level}
+              autoFocus
               aria-label="Blow out the candles"
               aria-valuetext={`${level} percent blown. Slide to the end, or press End, to blow out the candles.`}
               onChange={(e) => onSlide(Number(e.target.value))}
-              onPointerDown={() => (dragging.current = true)}
               onPointerUp={release}
               onPointerCancel={release}
               onTouchEnd={release}
@@ -70,7 +68,7 @@ export function Scene4({ state, dispatch }: SceneProps) {
             <p className="script">I hope it comes true.</p>
             <p>And I hope this year gives you so many reasons to smile.</p>
           </div>
-          <button type="button" className="btn primary" onClick={() => dispatch({ type: 'next', from: 4 })}>
+          <button type="button" className="btn primary" autoFocus onClick={() => dispatch({ type: 'next', from: 4 })}>
             There's a little more
           </button>
         </>

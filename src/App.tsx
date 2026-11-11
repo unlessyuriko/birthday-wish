@@ -3,6 +3,7 @@ import { config as rawConfig } from './content/birthday.config';
 import { sanitizeDeep } from './validation/text';
 import { validateConfig } from './validation/validate';
 import { initialState, journeyReducer, TOTAL_SCENES, type Action } from './state/journey';
+import { AmbientHearts } from './components/Art';
 import { Scene1 } from './scenes/Scene1';
 import { Scene2 } from './scenes/Scene2';
 import { Scene3 } from './scenes/Scene3';
@@ -61,6 +62,7 @@ export function App() {
 
   return (
     <div className="app">
+      <AmbientHearts />
       <header className="topbar">
         <p className="progress">A little surprise, {state.scene} of {TOTAL_SCENES}</p>
         <div className="progress-dots" aria-hidden="true">

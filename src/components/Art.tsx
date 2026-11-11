@@ -107,3 +107,40 @@ export function GiftBox({ open }: { open: boolean }) {
     </svg>
   );
 }
+
+/** A softly beating heart with expanding rings. Decorative. */
+export function Heartbeat({ size = 56 }: { size?: number }) {
+  return (
+    <span className="heartbeat" style={{ width: size, height: size }} aria-hidden="true">
+      <span className="hb-ring" />
+      <span className="hb-ring r2" />
+      <span className="hb-heart"><Heart size={size * 0.72} color="#B52346" /></span>
+    </span>
+  );
+}
+
+/** A small burst of hearts. Re-mount with a new key to replay. */
+export function HeartBurst() {
+  return (
+    <span className="burst" aria-hidden="true">
+      {Array.from({ length: 8 }, (_, i) => (
+        <span key={i} style={{ ['--a' as string]: `${i * 45 - 90}deg`, animationDelay: `${(i % 3) * 40}ms` }}>
+          <Heart size={14 + (i % 3) * 3} color={i % 2 ? '#F6B8CB' : '#B52346'} />
+        </span>
+      ))}
+    </span>
+  );
+}
+
+/** A few faint hearts drifting up the page. Restrained on purpose. */
+export function AmbientHearts() {
+  return (
+    <div className="ambient" aria-hidden="true">
+      {Array.from({ length: 7 }, (_, i) => (
+        <span key={i} style={{ left: `${8 + i * 14}%`, animationDuration: `${17 + (i % 4) * 4}s`, animationDelay: `${-i * 3.1}s`, ['--s' as string]: `${12 + (i % 3) * 6}px` }}>
+          <Heart size={20} color="#F6B8CB" />
+        </span>
+      ))}
+    </div>
+  );
+}

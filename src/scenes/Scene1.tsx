@@ -1,35 +1,71 @@
-import { Bear, Envelope } from '../components/Art';
+import { useState } from 'react';
+import { Bear, Envelope, Heartbeat, HeartBurst } from '../components/Art';
+import { ChaseButton } from '../components/ChaseButton';
 import { Photo } from '../components/Photo';
-import { Choices, Reaction, SceneHeading } from '../components/ui';
-import { identityOptions } from '../content/copy';
+import { Reaction, SceneHeading } from '../components/ui';
+import { gateQuestions } from '../content/copy';
+import { TOTAL_GATE } from '../state/journey';
 import type { SceneProps } from './types';
 
 export function Scene1({ state, dispatch, config }: SceneProps) {
-  const picked = identityOptions.find((o) => o.id === state.identity);
+  const [line, setLine] = useState<string>();
+  const [burst, setBurst] = useState(0);
+  const q = gateQuestions[Math.min(state.gate, TOTAL_GATE - 1)];
+  const gating = state.gate < TOTAL_GATE;
+
+  const answered = (reaction: string) => {
+    setLine(reaction);
+    setBurst((b) => b + 1);
+    dispatch({ type: 'gateAnswered' });
+  };
+
   return (
     <section className="scene" aria-label="Special delivery">
-      <div className="hero-art">
-        <Bear size={96} className="bear-bob" />
-        <Envelope open={state.envelopeOpen}>
-          {state.envelopeOpen && config.heroPhotoId && (
-            <div className="env-photo"><Photo config={config} photoId={config.heroPhotoId} /></div>
-          )}
-        </Envelope>
+      <div className={`hero-art ${state.envelopeOpen ? '' : 'compact'}`}>
+        <Bear size={state.envelopeOpen ? 96 : 56} className="bear-bob" />
+        <div className="env-scale">
+          <Envelope open={state.envelopeOpen}>
+            {state.envelopeOpen && config.heroPhotoId && (
+              <div className="env-photo"><Photo config={config} photoId={config.heroPhotoId} /></div>
+            )}
+          </Envelope>
+        </div>
         <p className="envelope-to">For {config.recipient.nickname}</p>
       </div>
-      <div>
-        <SceneHeading>Special delivery for the birthday girl</SceneHeading>
-      </div>
+      <SceneHeading>Special delivery for the birthday girl</SceneHeading>
       {!state.envelopeOpen ? (
         <>
           <p>Someone asked me to deliver a suspicious amount of love today.</p>
-          <p>Before I hand it over... who's opening this?</p>
-          <Choices label="Who is opening this?" options={identityOptions} value={state.identity} onPick={(id) => dispatch({ type: 'chooseIdentity', id })} />
-          <Reaction text={picked?.reaction} />
-          {state.identity && (
-            <button type="button" className="btn primary" onClick={() => dispatch({ type: 'openEnvelope' })}>
-              Open my envelope
-            </button>
+          {gating ? (
+            <>
+              <Reaction text={line} />
+              <div className="gate" key={state.gate}>
+                <div className="gate-head">
+                  <Heartbeat size={44} />
+                  <p className="eyebrow">Before I hand it over: check {state.gate + 1} of {TOTAL_GATE}</p>
+                </div>
+                <p className="gate-q">{q.question}</p>
+                <div className="gate-yes">
+                  <button
+                    type="button"
+                    className="btn primary"
+                    autoFocus={state.gate > 0}
+                    onClick={() => answered(q.yesReaction)}
+                  >
+                    {q.yesLabel}
+                  </button>
+                  {burst > 0 && <HeartBurst key={burst} />}
+                </div>
+                <GateTaunts q={q} onCaught={() => answered(q.caughtReaction)} />
+              </div>
+            </>
+          ) : (
+            <>
+              <Reaction text={line} />
+              <button type="button" className="btn primary" autoFocus onClick={() => dispatch({ type: 'openEnvelope' })}>
+                Open my envelope
+              </button>
+            </>
           )}
         </>
       ) : (
@@ -39,11 +75,21 @@ export function Scene1({ state, dispatch, config }: SceneProps) {
             <p>I made you a little something.</p>
             <p>Okay... I may have got carried away.</p>
           </div>
-          <button type="button" className="btn primary" onClick={() => dispatch({ type: 'next', from: 1 })}>
+          <button type="button" className="btn primary" autoFocus onClick={() => dispatch({ type: 'next', from: 1 })}>
             Let me see
           </button>
         </>
       )}
     </section>
+  );
+}
+
+function GateTaunts({ q, onCaught }: { q: (typeof gateQuestions)[number]; onCaught: () => void }) {
+  const [taunt, setTaunt] = useState<string>();
+  return (
+    <>
+      <ChaseButton label={q.noLabel} giveUpLabel={q.giveUpLabel} taunts={q.taunts} onTaunt={setTaunt} onCaught={onCaught} />
+      <div className="taunt-slot"><Reaction text={taunt} /></div>
+    </>
   );
 }

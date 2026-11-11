@@ -1,3 +1,4 @@
+import { Heartbeat } from '../components/Art';
 import { Reaction, SceneHeading } from '../components/ui';
 import { privileges, qualifications } from '../content/copy';
 import type { SceneProps } from './types';
@@ -22,6 +23,7 @@ export function Scene5({ state, dispatch, config }: SceneProps) {
   const quals = state.application !== 'none';
   return (
     <section className="scene" aria-label="Birthday person application">
+      <div className="hero-art"><Heartbeat size={60} /></div>
       <SceneHeading>One more birthday with you?</SceneHeading>
       <p>Can I apply to be your birthday person again next year?</p>
       {quals && (
@@ -47,11 +49,11 @@ export function Scene5({ state, dispatch, config }: SceneProps) {
           </>
         )}
         {!approved && quals && (
-          <button type="button" className="btn primary" onClick={() => dispatch({ type: 'approve' })}>
+          <button type="button" className="btn primary" autoFocus onClick={() => dispatch({ type: 'approve' })}>
             Application approved
           </button>
         )}
-        <button type="button" className={approved ? 'btn primary' : 'btn quiet'} onClick={() => dispatch({ type: 'next', from: 5 })}>
+        <button type="button" className={approved ? 'btn primary' : 'btn quiet'} autoFocus={approved} onClick={() => dispatch({ type: 'next', from: 5 })}>
           Keep opening my birthday gift
         </button>
       </div>
