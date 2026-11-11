@@ -38,13 +38,13 @@ export const config: BirthdayConfig = {
     { id: 'm3', photoId: 'selfie-3', teaser: 'Still falling for you, every single day.' },
   ],
 
-  // Suggested draft, pending approval.
+  // Approved message from the client.
   letter: {
     paragraphs: [
-      'Happy Birthday, my love.',
-      "I love the big moments with you, but I think my favourites are the little ones. The random conversations, the silly jokes, and the days when we're not doing anything special, but I'm happy because you're there.",
-      "I hope this year brings you things you've been quietly wishing for. I'll be here, cheering you on and finding new ways to make you smile.",
-      "Today is yours. I'm just very lucky to be part of it.",
+      'Happy Birthday, my love',
+      'This is the first time I get to celebrate your birthday with you, and I hope it will be the first of many more birthdays together.',
+      'I may not be able to give you everything in the world, but I promise to give you my love, care, and support every single day. I wish to be by your side, making you smile, holding your hand, and celebrating every birthday with you until the end of our lives.',
+      'May all your wishes come true, and may your life always be filled with happiness and love.',
     ],
     signOff: 'Love, Mg',
   },
@@ -56,12 +56,5 @@ export const config: BirthdayConfig = {
   // Files go in public/assets/audio and public/assets/video. Provide a transcript for voice notes.
   media: { musicSrc: 'assets/audio/romantic-piano.mp3' },
 
-  // Need at least 3 to enable the Emergency compliments button.
-  compliments: [
-    'Yes, I made a whole app for you.',
-    '[Add a specific, affectionate compliment.]',
-    '[Add another specific, affectionate compliment.]',
-  ],
-
-  features: { emergencyCompliments: true, music: true },
+  features: { music: true },
 };

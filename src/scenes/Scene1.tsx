@@ -31,14 +31,14 @@ export function Scene1({ state, dispatch, config }: SceneProps) {
       <SceneHeading>Special delivery for the birthday girl</SceneHeading>
       {!state.envelopeOpen ? (
         <>
-          <p>Someone asked me to deliver a suspicious amount of love today.</p>
+          <p className="intro">Someone asked me to deliver a suspicious amount of love today.</p>
           {gating ? (
             <>
               <Reaction text={line} />
               <div className="gate" key={state.gate}>
                 <div className="gate-head">
-                  <Heartbeat size={44} />
-                  <p className="eyebrow">Before I hand it over: check {state.gate + 1} of {TOTAL_GATE}</p>
+                  <Heartbeat size={36} />
+                  <p className="eyebrow"><span className="long">Before I hand it over: </span>check {state.gate + 1} of {TOTAL_GATE}</p>
                 </div>
                 <p className="gate-q">{q.question}</p>
                 <div className="gate-yes">

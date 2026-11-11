@@ -59,7 +59,7 @@ export function Choices({
   onPick: (id: string) => void;
 }) {
   return (
-    <div role="group" aria-label={label} className="choices">
+    <div role="group" aria-label={label} className={`choices ${options.length === 4 ? 'cols2' : ''}`}>
       {options.map((o) => (
         <button key={o.id} type="button" className="choice" aria-pressed={value === o.id} onClick={() => onPick(o.id)}>
           <span className="choice-check" aria-hidden="true">{value === o.id ? '♥' : ''}</span>

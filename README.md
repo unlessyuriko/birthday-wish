@@ -16,10 +16,10 @@ npm run preview    # serve dist/ locally
 
 Everything personal is in **one file: `src/content/birthday.config.ts`**.
 
-- `mode: 'preview'` allows bracketed placeholders (such as the two spare compliments) and builds fine.
+- `mode: 'preview'` allows bracketed placeholders and builds fine.
 - `mode: 'production'` makes `npm run build` fail while any placeholder, missing caption, bad photo reference, or missing voice-note transcript remains.
 - The three flip cards are photo-only (a decorative cover, then the selfie, no text). Each `memories` entry just needs a `photoId`.
-- Replace the letter and the spare compliments. Do not invent memories.
+- Replace the letter with the approved message. Do not invent memories.
 - `surprise` is hidden unless `confirmed: true` with a title and description. Leave it `undefined` if there is no real surprise.
 - The long dash character (U+2014) is converted to " - " at render time, and flagged as a validation warning.
 

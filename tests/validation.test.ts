@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { config as base } from '../src/content/birthday.config';
 import type { BirthdayConfig } from '../src/content/types';
 import { FORBIDDEN_DASH, hasForbiddenDash, sanitizeDeep, stripForbiddenDash, collectStrings } from '../src/validation/text';
-import { complimentsEnabled, surpriseIsValid, validateConfig } from '../src/validation/validate';
+import { surpriseIsValid, validateConfig } from '../src/validation/validate';
 import { decisions, gateQuestions } from '../src/content/copy';
 
 const clone = (): BirthdayConfig => structuredClone(base);
@@ -34,6 +34,8 @@ describe('config validation', () => {
   it('production rejects unresolved placeholders', () => {
     const c = clone();
     c.mode = 'production';
+    expect(validateConfig(c).errors).toEqual([]);
+    c.letter.paragraphs[0] = '[Add the message]';
     expect(validateConfig(c).errors.some((e) => e.includes('placeholder'))).toBe(true);
   });
   it('rejects unknown photo references and non-shareable share photo', () => {
@@ -56,12 +58,5 @@ describe('config validation', () => {
     expect(surpriseIsValid(c)).toBe(false);
     c.surprise = { confirmed: true, title: 't', description: 'd' };
     expect(surpriseIsValid(c)).toBe(true);
-  });
-  it('needs three compliments', () => {
-    const c = clone();
-    c.compliments = ['a', 'b'];
-    expect(complimentsEnabled(c)).toBe(false);
-    c.compliments = ['a', 'b', 'c'];
-    expect(complimentsEnabled(c)).toBe(true);
   });
 });

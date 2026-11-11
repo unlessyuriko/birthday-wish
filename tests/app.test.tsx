@@ -10,7 +10,7 @@ const click = (name: string | RegExp) => fireEvent.click(screen.getByRole('butto
 describe('full journey (jsdom, click only)', () => {
   it('walks scenes 1 to 7 and replays', () => {
     render(<App />);
-    expect(screen.getByText(/A little surprise, 1 of 6/)).toBeTruthy();
+    expect(document.querySelector('.progress')?.textContent).toMatch(/1 of 6/);
     expect(screen.queryByRole('button', { name: 'Open my envelope' })).toBeNull();
     click("Yes, that's me");
     expect(screen.getByText(/The reason for this entire app/)).toBeTruthy();
@@ -50,14 +50,15 @@ describe('full journey (jsdom, click only)', () => {
     expect(screen.getByText(/Happy Birthday, my love/)).toBeTruthy();
     click("There's one little keepsake left");
 
-    expect(screen.getByText(/A little surprise, 6 of 6/)).toBeTruthy();
+    expect(document.querySelector('.progress')?.textContent).toMatch(/6 of 6/);
     expect(screen.getByRole('button', { name: 'Save my birthday card' })).toBeTruthy();
-    expect(screen.getByRole('button', { name: 'Emergency compliments' })).toBeTruthy();
+    expect(screen.getByText('Yes, I made a whole app for you.')).toBeTruthy();
+    expect(screen.queryByRole('button', { name: /compliments/i })).toBeNull();
     click('Back');
-    expect(screen.getByText(/5 of 6/)).toBeTruthy();
+    expect(document.querySelector('.progress')?.textContent).toMatch(/5 of 6/);
     click("There's one little keepsake left");
     click('Replay my surprise');
-    expect(screen.getByText(/1 of 6/)).toBeTruthy();
+    expect(document.querySelector('.progress')?.textContent).toMatch(/1 of 6/);
   });
 });
 

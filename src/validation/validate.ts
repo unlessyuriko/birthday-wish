@@ -11,10 +11,6 @@ export function surpriseIsValid(c: BirthdayConfig): boolean {
   return !!s && s.confirmed === true && s.title.trim().length > 0 && s.description.trim().length > 0;
 }
 
-export function complimentsEnabled(c: BirthdayConfig): boolean {
-  return c.features.emergencyCompliments && c.compliments.filter((x) => x.trim()).length >= 3;
-}
-
 /** Messages never include the content itself, only paths and rules, so they are safe to print. */
 export function validateConfig(c: BirthdayConfig): ValidationResult {
   const errors: string[] = [];
@@ -61,8 +57,6 @@ export function validateConfig(c: BirthdayConfig): ValidationResult {
     if (c.media.videoSrc && !c.media.captionsSrc) issue('media.captionsSrc is recommended with a video', false);
   }
   if (c.features.music && !c.media?.musicSrc) warnings.push('features.music is on but media.musicSrc is missing; the sound toggle will be hidden');
-  if (c.features.emergencyCompliments && !complimentsEnabled(c))
-    warnings.push('fewer than 3 compliments; the Emergency compliments button will be hidden');
 
   for (const [path, s] of collectStrings(c)) {
     if (hasForbiddenDash(s)) warnings.push(`${path} contains the forbidden long dash; it will be converted to a hyphen`);

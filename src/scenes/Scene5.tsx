@@ -18,7 +18,7 @@ export function Scene5({ state, dispatch, config, onMediaPlaying }: Props) {
     onEnded: () => onMediaPlaying(false),
   };
   return (
-    <section className="scene" aria-label="A gift from me">
+    <section className={`scene ${state.giftOpen ? 'gift-open' : ''}`} aria-label="A gift from me">
       <div className="hero-art">
         <Bear size={72} className="bear-bob" />
         <GiftBox open={state.giftOpen} />

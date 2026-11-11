@@ -137,8 +137,8 @@ body {
 .envelope.is-open .env-seal { opacity: 0; }
 
 /* Memory cards: a romantic cover that flips to reveal the whole photo (no text on the back) */
-.memories { list-style: none; padding: 0; margin: 0; display: grid; gap: 26px; justify-items: center; }
-.memories li { width: min(100%, 272px); }
+.memories { list-style: none; padding: 0; margin: 0; display: grid; justify-items: center; }
+.memories li { width: min(100%, calc(clamp(200px, calc(100vh - 400px), 400px) / var(--rn, 1.333))); width: min(100%, calc(clamp(200px, calc(100dvh - 400px), 400px) / var(--rn, 1.333))); }
 .mem { all: unset; box-sizing: border-box; display: block; width: 100%; cursor: pointer; perspective: 1000px; transform: rotate(var(--tilt)); border-radius: 16px; transition: transform 0.2s ease; -webkit-tap-highlight-color: transparent; }
 .mem:focus-visible { outline: 3px solid var(--text); outline-offset: 5px; }
 .mem-inner { display: grid; transition: transform 0.65s cubic-bezier(0.3, 0.9, 0.3, 1); transform-style: preserve-3d; }
@@ -219,7 +219,6 @@ body {
 .status:empty { display: none; }
 .status p { background: var(--pink); padding: 10px 12px; border-radius: 14px; font-weight: 700; }
 .export-img { width: min(100%, 300px); margin: 0 auto; border-radius: 14px; }
-.compliment p { font-family: var(--script); font-size: 1.8rem; color: var(--primary); line-height: 1.25; animation: rise 0.3s ease both; }
 .note { background: var(--pink); padding: 10px 12px; border-radius: 14px; margin: 0; }
 .owner-notes { font-size: 0.8rem; color: var(--muted); background: #fff; border: 1px dashed var(--muted); border-radius: 12px; padding: 8px 12px; }
 
@@ -251,10 +250,10 @@ body {
 
 /* ---------- Life and motion ---------- */
 .topbar, .stage, .backbar, .owner-notes, .note { position: relative; z-index: 1; }
-.ambient { position: fixed; top: 0; right: 0; bottom: 0; left: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.ambient { position: fixed; top: 0; right: 0; bottom: 0; left: 0; overflow: hidden; pointer-events: none; z-index: 6; }
 .ambient span { position: absolute; bottom: -30px; width: var(--s); height: var(--s); opacity: 0; animation: drift linear infinite; }
 .ambient svg { width: 100%; height: 100%; }
-@keyframes drift { 0% { transform: translateY(0) translateX(0) rotate(-8deg); opacity: 0; } 10% { opacity: 0.35; } 85% { opacity: 0.25; } 100% { transform: translateY(-110vh) translateX(24px) rotate(10deg); opacity: 0; } }
+@keyframes drift { 0% { transform: translateY(0) translateX(0) rotate(-8deg); opacity: 0; } 10% { opacity: 0.5; } 85% { opacity: 0.4; } 100% { transform: translateY(-110vh) translateX(24px) rotate(10deg); opacity: 0; } }
 
 /* Staggered entrance inside each scene */
 .scene > *:not(.confetti) { animation: rise 0.5s ease both; }
@@ -340,3 +339,98 @@ body {
 .petal.p1 { left: 30px; } .petal.p2 { left: 150px; animation-delay: 3.6s; } .petal.p3 { left: 92px; animation-delay: 4.6s; } .petal.p4 { left: 12px; animation-delay: 6s; }
 @keyframes petal-fall { 0% { transform: translate(0, 0) rotate(0); opacity: 0; } 10% { opacity: 0.9; } 100% { transform: translate(24px, 190px) rotate(260deg); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .petal { display: none; } }
+
+/* ---------- Carousel controls ---------- */
+.mem-nav { display: flex; align-items: center; justify-content: center; gap: 6px; }
+.mem-arrow { width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--primary); background: #fff; color: var(--primary); display: grid; place-items: center; cursor: pointer; padding: 0; }
+.mem-arrow:active { background: var(--pink); }
+.mem-dots { display: flex; }
+.mem-dot { width: 44px; height: 44px; border: 0; background: transparent; display: grid; place-items: center; cursor: pointer; padding: 0; }
+.mem-dot span { width: 10px; height: 10px; border-radius: 50%; background: var(--pink-deep); transition: transform 0.2s, background 0.2s; }
+.mem-dot[aria-current="true"] span { background: var(--primary); transform: scale(1.5); }
+
+/* ---------- Top bar Back ---------- */
+.back { display: inline-flex; align-items: center; gap: 2px; min-height: 44px; padding: 0 10px 0 6px; border: 0; background: transparent; color: var(--primary); font: inherit; font-weight: 800; cursor: pointer; border-radius: 999px; }
+.back:active { background: var(--pink); }
+.progress .long { display: inline; }
+
+/* ---------- Keepsake layout ---------- */
+.keepsake { display: grid; gap: 14px; justify-items: center; }
+.card-preview canvas { width: auto; height: min(46vh, 480px); height: min(46dvh, 480px); max-width: 100%; aspect-ratio: 9 / 16; }
+.keepsake-controls { display: grid; gap: 12px; width: 100%; justify-items: center; }
+.style-picker { flex-direction: row; }
+.closing { font-family: var(--script); font-size: 1.7rem; line-height: 1.2; color: var(--primary); }
+.choices.cols2 { grid-template-columns: 1fr 1fr; }
+.choices.cols2 .choice { padding: 8px 10px; }
+
+/* ---------- Phones: fit each step on one screen ---------- */
+@media (max-width: 560px) {
+  .app { gap: 8px; padding-top: max(8px, env(safe-area-inset-top)); padding-bottom: max(10px, env(safe-area-inset-bottom)); }
+  .progress { font-size: 0.85rem; }
+  .keepsake { grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr); align-items: center; gap: 12px; }
+  .card-preview canvas { height: auto; width: 100%; max-height: calc(100vh - 250px); max-height: calc(100dvh - 250px); }
+  .keepsake-controls { gap: 8px; }
+  .style-picker { flex-direction: column; align-items: stretch; gap: 6px; width: 100%; }
+  .chip { padding: 6px 8px; font-size: 0.85rem; line-height: 1.2; }
+  .keepsake .btn { min-height: 44px; padding: 8px 10px; font-size: 0.9rem; }
+  .keepsake .btn-stack { gap: 8px; }
+  .scene.wide { padding-left: 14px; padding-right: 14px; }
+}
+@media (max-width: 400px) { .progress .long { display: none; } }
+@media (max-height: 780px) {
+  .scene { padding: 20px 16px 18px; gap: 10px; }
+  .scene-title { font-size: clamp(1.3rem, 5.4vw, 1.6rem); }
+  .scene p { line-height: 1.4; }
+  .hero-art { zoom: 0.88; }
+  .btn { min-height: 46px; padding-top: 8px; padding-bottom: 8px; }
+  .choice { min-height: 48px; }
+  .choices { gap: 8px; }
+  .reaction { padding: 9px 12px; }
+  .gate { padding: 12px 12px 8px; gap: 8px; }
+  .chase-arena { height: 92px; }
+  .taunt-slot .reaction-wrap { min-height: 2.8em; }
+  .letter { max-height: calc(100dvh - 300px); padding: 14px; }
+}
+@media (max-height: 680px) {
+  .hero-art { zoom: 0.74; }
+  .scene { padding: 16px 14px 14px; gap: 8px; }
+  .scene.gift-open .hero-art { display: none; }
+  .chase-arena { height: 80px; }
+  .letter { max-height: calc(100dvh - 250px); }
+}
+@media (max-height: 600px) {
+  .hero-art { zoom: 0.62; }
+}
+
+/* ---------- Extra compaction for small phones ---------- */
+@media (max-width: 560px) {
+  .scene.gift-open .hero-art { display: none; }
+  .letter { max-height: calc(100vh - 230px); max-height: calc(100dvh - 230px); }
+}
+@media (max-width: 420px), (max-height: 700px) {
+  .gate-head .eyebrow .long { display: none; }
+}
+@media (max-height: 660px) {
+  .chase-arena { height: 72px; }
+  .gate-q { font-size: 1.02rem; }
+  .taunt-slot .reaction-wrap { min-height: 2.4em; }
+  .gate-head { gap: 6px; }
+  .hero-art.compact .bear-bob { display: none; }
+}
+@media (max-height: 600px) {
+  .scene { padding: 14px 12px 12px; gap: 6px; }
+  .scene-title { font-size: 1.22rem; }
+  .intro { display: none; }
+  .btn { min-height: 44px; }
+  .choice { min-height: 44px; }
+  .choices { gap: 6px; }
+  .chase-arena { height: 66px; }
+  .closing { font-size: 1.35rem; }
+  .keepsake { gap: 8px; }
+  .keepsake .btn { padding: 6px 8px; font-size: 0.85rem; }
+  .chip { padding: 4px 6px; font-size: 0.8rem; min-height: 40px; }
+  .card-preview canvas { max-height: calc(100dvh - 300px); }
+  .status:empty { display: none; }
+  .mem-nav { gap: 2px; }
+  .letter { max-height: calc(100vh - 270px); max-height: calc(100dvh - 270px); }
+}

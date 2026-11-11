@@ -3,7 +3,6 @@ import { SceneHeading } from '../components/ui';
 import { cardStyles } from '../content/copy';
 import { buildCardContent, cardFileName, resolveSharePhoto } from '../export/cardContent';
 import { canvasToBlob, loadCardFonts, loadCardPhoto, renderBirthdayCard, type CardPhoto } from '../export/renderBirthdayCard';
-import { complimentsEnabled } from '../validation/validate';
 import type { SceneProps } from './types';
 
 type Props = SceneProps & { onReplay: () => void };
@@ -17,7 +16,6 @@ export function Scene6({ state, dispatch, config, onReplay }: Props) {
   const [ready, setReady] = useState(false);
   const [status, setStatus] = useState<ExportStatus>('idle');
   const [shownUrl, setShownUrl] = useState<string>();
-  const [complimentIdx, setComplimentIdx] = useState(-1);
   const urlRef = useRef<string>();
 
   const style = state.cardStyle;
@@ -108,44 +106,35 @@ export function Scene6({ state, dispatch, config, onReplay }: Props) {
     }
   };
 
-  const compliments = config.compliments.filter((c) => c.trim());
-  const showCompliments = complimentsEnabled(config);
-  const nextCompliment = () =>
-    setComplimentIdx((i) => {
-      if (compliments.length === 0) return -1;
-      return (i + 1) % compliments.length; // finite list, wraps, never an immediate repeat
-    });
-
   return (
     <section className="scene wide" aria-label="Your birthday card">
       <SceneHeading>Made for you. Worth showing off.</SceneHeading>
-      <div className="card-preview">
-        <canvas ref={canvasRef} width={1080} height={1920} role="img" aria-label={`Birthday card preview. ${content.altText}`} />
-      </div>
-      <div role="group" aria-label="Card style" className="style-picker">
-        {cardStyles.map((s) => (
-          <button key={s.id} type="button" className="chip" aria-pressed={style === s.id} onClick={() => dispatch({ type: 'setStyle', style: s.id })}>
-            {s.label}
-          </button>
-        ))}
-      </div>
-      <div className="btn-stack">
-        <button type="button" className="btn primary" onClick={save} disabled={!ready || status === 'preparing'}>
-          {status === 'preparing' ? 'Preparing your card...' : status === 'error' ? 'Try saving again' : 'Save my birthday card'}
-        </button>
-        {canShareFiles && ready && (
-          <button type="button" className="btn secondary" onClick={shareCard}>
-            Share my card
-          </button>
-        )}
-        <button type="button" className="btn secondary" onClick={onReplay}>
-          Replay my surprise
-        </button>
-        {showCompliments && (
-          <button type="button" className="btn quiet" onClick={nextCompliment}>
-            Emergency compliments
-          </button>
-        )}
+      <div className="keepsake">
+        <div className="card-preview">
+          <canvas ref={canvasRef} width={1080} height={1920} role="img" aria-label={`Birthday card preview. ${content.altText}`} />
+        </div>
+        <div className="keepsake-controls">
+          <div role="group" aria-label="Card style" className="style-picker">
+            {cardStyles.map((s) => (
+              <button key={s.id} type="button" className="chip" aria-pressed={style === s.id} onClick={() => dispatch({ type: 'setStyle', style: s.id })}>
+                {s.label}
+              </button>
+            ))}
+          </div>
+          <div className="btn-stack">
+            <button type="button" className="btn primary" onClick={save} disabled={!ready || status === 'preparing'}>
+              {status === 'preparing' ? 'Preparing your card...' : status === 'error' ? 'Try saving again' : 'Save my birthday card'}
+            </button>
+            {canShareFiles && ready && (
+              <button type="button" className="btn secondary" onClick={shareCard}>
+                Share my card
+              </button>
+            )}
+            <button type="button" className="btn secondary" onClick={onReplay}>
+              Replay my surprise
+            </button>
+          </div>
+        </div>
       </div>
       <div role="status" aria-live="polite" className="status">
         {status === 'done' && <p>Your card download has started as {cardFileName(style)}. Look in your downloads.</p>}
@@ -153,11 +142,7 @@ export function Scene6({ state, dispatch, config, onReplay }: Props) {
         {status === 'error' && <p>Something went wrong making the card. Your surprise is safe. Please try again.</p>}
       </div>
       {shownUrl && <img className="export-img" src={shownUrl} alt={`Your birthday card. ${content.altText}`} />}
-      {showCompliments && complimentIdx >= 0 && (
-        <div role="status" aria-live="polite" className="compliment">
-          <p key={complimentIdx}>{compliments[complimentIdx]}</p>
-        </div>
-      )}
+      <p className="closing">Yes, I made a whole app for you.</p>
     </section>
   );
 }

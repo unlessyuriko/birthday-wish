@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Heart } from '../components/Art';
 import { Photo } from '../components/Photo';
 import { SceneHeading } from '../components/ui';
@@ -7,12 +8,15 @@ const FALLBACK_TEASERS = ['Every moment with you is my favourite.', 'You make or
 
 export function Scene3({ state, dispatch, config }: SceneProps) {
   const total = config.memories.length;
+  const [idx, setIdx] = useState(0);
+  const go = (n: number) => setIdx((n + total) % total);
   return (
     <section className="scene" aria-label="Evidence">
       <SceneHeading>Evidence that you're my favourite person</SceneHeading>
       <p>Tap a little memory.</p>
       <ul className="memories">
         {config.memories.map((m, i) => {
+          if (i !== idx) return null;
           const flipped = state.openedMemories.includes(m.id);
           const photo = config.photos.find((p) => p.id === m.photoId);
           // Match the card to the photo's own proportions so the whole picture shows.
@@ -23,7 +27,7 @@ export function Scene3({ state, dispatch, config }: SceneProps) {
               <button
                 type="button"
                 className={`mem ${flipped ? 'flipped' : ''}`}
-                style={{ ['--tilt' as string]: `${[-2, 1.6, -1.2][i % 3]}deg`, ['--ratio' as string]: `${ratio}%` }}
+                style={{ ['--tilt' as string]: `${[-2, 1.6, -1.2][i % 3]}deg`, ['--ratio' as string]: `${ratio}%`, ['--rn' as string]: ratio / 100 }}
                 aria-pressed={flipped}
                 onClick={() => dispatch({ type: 'toggleMemory', id: m.id })}
               >
@@ -53,6 +57,21 @@ export function Scene3({ state, dispatch, config }: SceneProps) {
           );
         })}
       </ul>
+      <div className="mem-nav">
+        <button type="button" className="mem-arrow" aria-label="Previous memory" onClick={() => go(idx - 1)}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" /></svg>
+        </button>
+        <div className="mem-dots" role="group" aria-label="Choose a memory">
+          {config.memories.map((m, i) => (
+            <button key={m.id} type="button" className="mem-dot" aria-label={`Memory ${i + 1} of ${total}`} aria-current={i === idx ? 'true' : undefined} onClick={() => go(i)}>
+              <span />
+            </button>
+          ))}
+        </div>
+        <button type="button" className="mem-arrow" aria-label="Next memory" onClick={() => go(idx + 1)}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" /></svg>
+        </button>
+      </div>
       <button type="button" className="btn primary" onClick={() => dispatch({ type: 'next', from: 3 })}>
         A birthday wish next
       </button>

@@ -62,7 +62,13 @@ export function App() {
     <div className="app">
       <AmbientHearts />
       <header className="topbar">
-        <p className="progress">A little surprise, {state.scene} of {TOTAL_SCENES}</p>
+        {state.scene > 1 && (
+          <button type="button" className="back" onClick={() => dispatch({ type: 'back' })}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" /></svg>
+            Back
+          </button>
+        )}
+        <p className="progress"><span className="long">A little surprise, </span>{state.scene} of {TOTAL_SCENES}</p>
         <div className="progress-dots" aria-hidden="true">
           {Array.from({ length: TOTAL_SCENES }, (_, i) => (
             <span key={i} className={i < state.scene ? 'on' : ''} />
@@ -79,13 +85,6 @@ export function App() {
       <main className="stage" key={state.scene}>
         {scene}
       </main>
-      {state.scene > 1 && (
-        <nav className="backbar" aria-label="Navigation">
-          <button type="button" className="btn ghost" onClick={() => dispatch({ type: 'back' })}>
-            Back
-          </button>
-        </nav>
-      )}
       {issues && (issues.errors.length > 0 || issues.warnings.length > 0) && (
         <details className="owner-notes">
           <summary>Owner notes (dev only)</summary>

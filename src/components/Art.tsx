@@ -132,13 +132,22 @@ export function HeartBurst() {
   );
 }
 
-/** A few faint hearts drifting up the page. Restrained on purpose. */
+/** Soft hearts drifting up the page, in front of the card so they show on phones too. Taps pass through. */
 export function AmbientHearts() {
+  const colors = ['#F6B8CB', '#E98BA8', '#F6B8CB', '#D9577A'];
   return (
     <div className="ambient" aria-hidden="true">
-      {Array.from({ length: 7 }, (_, i) => (
-        <span key={i} style={{ left: `${8 + i * 14}%`, animationDuration: `${17 + (i % 4) * 4}s`, animationDelay: `${-i * 3.1}s`, ['--s' as string]: `${12 + (i % 3) * 6}px` }}>
-          <Heart size={20} color="#F6B8CB" />
+      {Array.from({ length: 12 }, (_, i) => (
+        <span
+          key={i}
+          style={{
+            left: `${4 + ((i * 8.3) % 92)}%`,
+            animationDuration: `${13 + (i % 5) * 3}s`,
+            animationDelay: `${-i * 2.3}s`,
+            ['--s' as string]: `${12 + (i % 4) * 5}px`,
+          }}
+        >
+          <Heart size={20} color={colors[i % colors.length]} />
         </span>
       ))}
     </div>

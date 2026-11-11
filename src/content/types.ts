@@ -33,6 +33,5 @@ export type BirthdayConfig = {
     transcript?: string;
     captionsSrc?: string;
   };
-  compliments: string[];
-  features: { emergencyCompliments: boolean; music: boolean };
+  features: { music: boolean };
 };
