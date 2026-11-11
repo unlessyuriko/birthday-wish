@@ -12,6 +12,9 @@ Date: 2026-11-11. Mode: preview (placeholder content).
 ## Cross-browser matrix (added)
 Full click-through plus horizontal-overflow check on all seven scenes, using Playwright engines on macOS: Chromium (Chrome), WebKit (Safari engine) and Firefox, at 320x568, 375x667, 390x844, 412x915, 768x1024, 1024x768, 1440x900 and 667x375 (landscape phone). PNG download was verified (1080x1920) on Chromium at every size, WebKit at 390, and Firefox as listed in the run output. These are desktop engines emulating phone sizes, not real devices.
 
+## Candle slider (added)
+Drag-to-blow slider checked with a real mouse drag in Chromium and WebKit: letting go at 50 percent springs back to 0, a full drag blows the candles out once, and the smoke loops afterwards. Touch dragging on a real phone and keyboard (End, Enter, Space) are implemented but not tested on devices.
+
 ## Not verified
 - Real iOS Safari, real Android Chrome, messaging-app browsers, and real download behaviour on mobile devices (the fallback "press and hold to save" path is implemented but untested).
 - Export with a real share photo (none supplied), long names/captions on the card (layout logic is unit-tested, not visually checked).

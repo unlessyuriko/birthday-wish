@@ -56,23 +56,38 @@ export function Envelope({ open, children }: { open: boolean; children?: React.R
   );
 }
 
-export function Cake({ out }: { out: boolean }) {
+export function Cake({ out, level = 0 }: { out: boolean; level?: number }) {
   const xs = [58, 90, 122];
+  const squash = 1 - Math.min(level, 100) / 100;
   return (
     <svg className="cake" viewBox="0 0 180 170" aria-hidden="true" focusable="false">
       <rect x="22" y="110" width="136" height="44" rx="10" fill="#F6B8CB" />
       <rect x="34" y="78" width="112" height="38" rx="10" fill="#FFF8F0" stroke="#E8B4C4" strokeWidth="2" />
       <path d="M34 92 q9 14 18 0 t18 0 t18 0 t18 0 t18 0 t18 0" fill="none" stroke="#B52346" strokeWidth="3" strokeLinecap="round" />
       <ellipse cx="90" cy="156" rx="84" ry="7" fill="#38252B" opacity="0.12" />
-      {xs.map((x) => (
+      {xs.map((x, i) => (
         <g key={x}>
           <rect x={x - 4} y="50" width="8" height="30" rx="2" fill="#D9AA58" />
-          <path
-            className={`flame ${out ? 'is-out' : ''}`}
-            d={`M${x} 28 C${x - 8} 38 ${x - 6} 48 ${x} 48 C${x + 6} 48 ${x + 8} 38 ${x} 28Z`}
-            fill="#FF9F43"
-          />
-          {out && <path className="smoke" d={`M${x} 26 q6 -8 0 -16`} fill="none" stroke="#70565F" strokeWidth="2" strokeLinecap="round" />}
+          {!out && (
+            <g
+              style={{
+                transformOrigin: `${x}px 48px`,
+                transform: `scale(${1 - 0.3 * (1 - squash)}, ${0.12 + 0.88 * squash})`,
+                opacity: 0.3 + 0.7 * squash,
+              }}
+            >
+              <path
+                className="flame"
+                d={`M${x} 28 C${x - 8} 38 ${x - 6} 48 ${x} 48 C${x + 6} 48 ${x + 8} 38 ${x} 28Z`}
+                fill="#FF9F43"
+              />
+            </g>
+          )}
+          {out && (
+            <g className="smoke-group" style={{ animationDelay: `${i * 0.5}s` }}>
+              <path className="smoke" d={`M${x} 46 q-7 -8 0 -15 q7 -8 0 -16 q-6 -7 0 -13`} fill="none" stroke="#70565F" strokeWidth="2.4" strokeLinecap="round" />
+            </g>
+          )}
         </g>
       ))}
     </svg>

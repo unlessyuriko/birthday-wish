@@ -19,23 +19,12 @@ export function Scene5({ state, dispatch, config }: SceneProps) {
       </section>
     );
   }
+  const quals = state.application !== 'none';
   return (
     <section className="scene" aria-label="Birthday person application">
       <SceneHeading>One more birthday with you?</SceneHeading>
       <p>Can I apply to be your birthday person again next year?</p>
-      {!approved && (
-        <div className="btn-row">
-          <button type="button" className="btn primary" onClick={() => dispatch({ type: 'approve' })}>
-            You're hired
-          </button>
-          {state.application === 'none' && (
-            <button type="button" className="btn secondary" onClick={() => dispatch({ type: 'qualifications' })}>
-              What are your qualifications?
-            </button>
-          )}
-        </div>
-      )}
-      {state.application !== 'none' && (
+      {quals && (
         <div className="application">
           <p className="eyebrow">Application attached:</p>
           <ul className="ticks">
@@ -43,21 +32,29 @@ export function Scene5({ state, dispatch, config }: SceneProps) {
               <li key={q}>{q}</li>
             ))}
           </ul>
-          {!approved && (
-            <button type="button" className="btn primary" onClick={() => dispatch({ type: 'approve' })}>
-              Application approved
-            </button>
-          )}
         </div>
       )}
       <Reaction text={approved ? "Best news I've had all day." : undefined} />
-      <button
-        type="button"
-        className={approved ? 'btn primary' : 'btn quiet'}
-        onClick={() => dispatch({ type: 'next', from: 5 })}
-      >
-        Keep opening my birthday gift
-      </button>
+      <div className="btn-stack">
+        {!approved && !quals && (
+          <>
+            <button type="button" className="btn primary" onClick={() => dispatch({ type: 'approve' })}>
+              You're hired
+            </button>
+            <button type="button" className="btn secondary" onClick={() => dispatch({ type: 'qualifications' })}>
+              What are your qualifications?
+            </button>
+          </>
+        )}
+        {!approved && quals && (
+          <button type="button" className="btn primary" onClick={() => dispatch({ type: 'approve' })}>
+            Application approved
+          </button>
+        )}
+        <button type="button" className={approved ? 'btn primary' : 'btn quiet'} onClick={() => dispatch({ type: 'next', from: 5 })}>
+          Keep opening my birthday gift
+        </button>
+      </div>
     </section>
   );
 }

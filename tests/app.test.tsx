@@ -31,9 +31,9 @@ describe('full journey (jsdom, click only)', () => {
     expect(mem.getAttribute('aria-pressed')).toBe('true');
     click('A birthday wish next');
 
-    expect(screen.queryByRole('button', { name: /Blow out/ })).toBeNull();
+    expect(screen.queryByRole('slider')).toBeNull();
     click('I made my wish');
-    click('Blow out the candles');
+    fireEvent.change(screen.getByRole('slider', { name: 'Blow out the candles' }), { target: { value: '100' } });
     expect(screen.getByText('I hope it comes true.')).toBeTruthy();
     click("There's a little more");
 

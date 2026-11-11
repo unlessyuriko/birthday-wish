@@ -1,7 +1,7 @@
 export type Option = { id: string; label: string; reaction: string };
 
 export const identityOptions: Option[] = [
-  { id: 'birthday-girl', label: 'The birthday girl', reaction: 'There she is. The reason for this entire production.' },
+  { id: 'birthday-girl', label: 'The birthday girl', reaction: 'There she is. The reason for this entire app.' },
   { id: 'cutest-girl', label: "The world's cutest girl", reaction: 'Identity confirmed. Confidence also confirmed.' },
   { id: 'random-visitor', label: 'Just a random visitor', reaction: 'Nice try, birthday girl. Your surprise is right here.' },
 ];

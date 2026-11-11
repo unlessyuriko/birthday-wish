@@ -1,22 +1,27 @@
+import { useRef, useState } from 'react';
 import { Bear, Cake } from '../components/Art';
 import { Confetti, SceneHeading, useReducedMotion } from '../components/ui';
 import type { SceneProps } from './types';
 
 export function Scene4({ state, dispatch }: SceneProps) {
   const reduced = useReducedMotion();
+  const [level, setLevel] = useState(0);
+  const dragging = useRef(false);
+  const release = () => {
+    dragging.current = false;
+    // Let go before the end and the flames spring back, so it never feels stuck.
+    if (!state.candlesOut) setLevel((l) => (l >= 100 ? l : 0));
+  };
+  const onSlide = (v: number) => {
+    setLevel(v);
+    if (v >= 100) dispatch({ type: 'blowCandles' });
+  };
   return (
     <section className="scene" aria-label="Birthday wish">
       {state.confettiPending && !reduced && <Confetti onDone={() => dispatch({ type: 'confettiDone' })} />}
       <div className="hero-art">
         <Bear size={72} className="bear-bob" />
-        {state.wishReady && !state.candlesOut ? (
-          // Pointer convenience only: the labelled button below is the accessible action.
-          <button type="button" className="cake-btn" tabIndex={-1} aria-hidden="true" onClick={() => dispatch({ type: 'blowCandles' })}>
-            <Cake out={false} />
-          </button>
-        ) : (
-          <Cake out={state.candlesOut} />
-        )}
+        <Cake out={state.candlesOut} level={level} />
       </div>
       <SceneHeading>A tiny cake. A very big wish.</SceneHeading>
       {!state.wishReady && (
@@ -31,10 +36,32 @@ export function Scene4({ state, dispatch }: SceneProps) {
       )}
       {state.wishReady && !state.candlesOut && (
         <>
-          <p>Tap the candles when you're ready.</p>
-          <button type="button" className="btn primary" onClick={() => dispatch({ type: 'blowCandles' })}>
-            Blow out the candles
-          </button>
+          <p>Tap and drag all the way across to blow out the candles.</p>
+          <div className={`blow ${level === 0 ? '' : 'is-active'}`} style={{ ['--p' as string]: level / 100 }}>
+            <div className="blow-fill" aria-hidden="true" />
+            <span className="blow-label" aria-hidden="true">{level === 0 ? 'Blow out the candles' : ''}</span>
+            <input
+              type="range"
+              min={0}
+              max={100}
+              step={1}
+              value={level}
+              aria-label="Blow out the candles"
+              aria-valuetext={`${level} percent blown. Slide to the end, or press End, to blow out the candles.`}
+              onChange={(e) => onSlide(Number(e.target.value))}
+              onPointerDown={() => (dragging.current = true)}
+              onPointerUp={release}
+              onPointerCancel={release}
+              onTouchEnd={release}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  onSlide(100);
+                }
+              }}
+            />
+          </div>
+          <p className="hint">Using a keyboard? Press End, Enter or Space.</p>
         </>
       )}
       {state.candlesOut && (

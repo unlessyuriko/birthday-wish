@@ -52,7 +52,7 @@ export const config: BirthdayConfig = {
 
   // Need at least 3 to enable the Emergency compliments button.
   compliments: [
-    'Yes, I made a whole button for this.',
+    'Yes, I made a whole app for you.',
     '[Add a specific, affectionate compliment.]',
     '[Add another specific, affectionate compliment.]',
   ],

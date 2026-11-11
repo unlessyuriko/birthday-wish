@@ -162,7 +162,7 @@ Choices and reactions:
 
 | Choice | Reaction |
 | --- | --- |
-| The birthday girl | There she is. The reason for this entire production. |
+| The birthday girl | There she is. The reason for this entire app. |
 | The world's cutest girl | Identity confirmed. Confidence also confirmed. |
 | Just a random visitor | Nice try, birthday girl. Your surprise is right here. |
 
@@ -369,7 +369,7 @@ Available only after reaching the finale. Disabled until at least three approved
 
 Each click reveals the next compliment. Use a finite list and wrap around after the final item. Avoid immediate duplicates.
 
-One allowed generic line: "Yes, I made a whole button for this."
+One allowed generic line: "Yes, I made a whole app for you."
 
 Other compliments should come from the client and be specific, affectionate, and comfortable for the recipient. No appearance scoring or sensitive jokes by default.
 
