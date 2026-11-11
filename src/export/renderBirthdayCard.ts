@@ -94,6 +94,23 @@ function bear(ctx: CanvasRenderingContext2D, cx: number, cy: number, r: number) 
   circle(cx, cy + r * 1.05, r * 0.09, '#8F1836');
 }
 
+/** A quiet emblem used when there is no photo: gold ring, soft disc, cherry heart. */
+function emblem(ctx: CanvasRenderingContext2D, cx: number, cy: number, style: StyleId) {
+  const ringColor = style === 'funny' ? C.red : C.gold;
+  ctx.beginPath();
+  ctx.arc(cx, cy, 128, 0, Math.PI * 2);
+  ctx.fillStyle = style === 'minimal' ? C.cream : C.pink;
+  ctx.fill();
+  ctx.lineWidth = 4;
+  ctx.strokeStyle = ringColor;
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(cx, cy, 112, 0, Math.PI * 2);
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  heart(ctx, cx, cy + 6, 110, C.red);
+}
+
 function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
   ctx.beginPath();
   ctx.moveTo(x + r, y);
@@ -209,7 +226,7 @@ export function renderBirthdayCard(canvas: HTMLCanvasElement, content: CardConte
     });
   } else if (style === 'funny') {
     if (content.badge) {
-      const label = `Treat: ${content.badge}`;
+      const label = `Today's treat: ${content.badge}`;
       ctx.font = `800 40px ${BODY}`;
       const w = Math.min(ctx.measureText(label).width + 80, CONTENT_W - 40);
       items.push({
@@ -230,6 +247,8 @@ export function renderBirthdayCard(canvas: HTMLCanvasElement, content: CardConte
       });
       gap(50);
     }
+    content.supporting.forEach((l) => text(l, (s) => `800 ${s}px ${BODY}`, 46, 30, C.red, 1.2, 2));
+    gap(24);
     content.headline.forEach((l) => text(l, (s) => `800 ${s}px ${BODY}`, 88, 48, C.text, 1.15, 5));
     gap(50);
     content.details.forEach((d) => {
@@ -265,6 +284,10 @@ export function renderBirthdayCard(canvas: HTMLCanvasElement, content: CardConte
         },
       });
     });
+    if (content.signoff) {
+      gap(30);
+      text(content.signoff, (s) => `700 ${s}px ${SCRIPT}`, 80, 48, C.red, 1.1, 2);
+    }
   } else {
     items.push({
       h: 4,
@@ -318,7 +341,7 @@ export function renderBirthdayCard(canvas: HTMLCanvasElement, content: CardConte
     ctx.restore();
     ctx.restore();
   } else {
-    bear(ctx, CARD_W / 2, y + 150, 130);
+    emblem(ctx, CARD_W / 2, y + 150, style);
   }
   y += artH + GAP;
   for (const it of items) {

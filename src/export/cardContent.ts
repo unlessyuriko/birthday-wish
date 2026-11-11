@@ -27,8 +27,8 @@ export function buildCardContent(config: BirthdayConfig, style: StyleId, treatId
       headline: ['The world got you.', 'I got lucky.'],
       supporting: [
         `Happy Birthday, ${nick}.`,
-        `Today's agenda: ${treat.agenda}, and being ridiculously loved.`,
-        `Made just for you, by ${him}.`,
+        `Here's to ${treat.agenda}, and everything this year has waiting for you.`,
+        `With all my love, ${him}.`,
       ],
       details: [],
       altText: '',
@@ -36,17 +36,18 @@ export function buildCardContent(config: BirthdayConfig, style: StyleId, treatId
   } else if (style === 'funny') {
     c = {
       style,
-      headline: ['Birthday girl privileges: activated.'],
-      supporting: [],
-      details: ['Cake: required', 'Hugs: unlimited', 'Being loved: ongoing'],
+      headline: ['Another year of being iconic.'],
+      supporting: [`Happy Birthday, ${nick}.`],
+      details: ['Cake: non-negotiable', 'Good company: guaranteed', 'Being loved: always'],
       badge: treat.badge,
+      signoff: `With love, ${him}`,
       altText: '',
     };
   } else {
     c = {
       style,
       headline: [`Happy Birthday, ${nick}.`],
-      supporting: ['My favourite person. Today and every day.'],
+      supporting: ['My favourite person, today and always.'],
       details: [],
       signoff: `Love, ${him}`,
       altText: '',

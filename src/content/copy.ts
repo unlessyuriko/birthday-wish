@@ -59,6 +59,6 @@ export const privileges = ['Cake: required', 'Hugs: unlimited', 'Being loved: on
 export type StyleId = 'romantic' | 'funny' | 'minimal';
 export const cardStyles: Array<{ id: StyleId; label: string; hint: string }> = [
   { id: 'romantic', label: 'Soft and romantic', hint: 'Dreamy and tender' },
-  { id: 'funny', label: 'Cute and funny', hint: 'Playful privileges' },
+  { id: 'funny', label: 'Playful and chic', hint: 'Witty and bold' },
   { id: 'minimal', label: 'Minimal and elegant', hint: 'Quiet and classic' },
 ];

@@ -29,9 +29,9 @@ describe('keepsake content', () => {
     c.recipient.nickname = 'Nick';
     c.sender.name = 'Sam';
     const a = buildCardContent(c, 'romantic', 'hug');
-    expect(a.supporting).toContain("Today's agenda: a hug, and being ridiculously loved.");
+    expect(a.supporting).toContain("Here's to a hug, and everything this year has waiting for you.");
     expect(a.supporting).toContain('Happy Birthday, Nick.');
-    expect(a.supporting).toContain('Made just for you, by Sam.');
+    expect(a.supporting).toContain('With all my love, Sam.');
     expect(buildCardContent(c, 'funny', 'present').badge).toBe('A present');
     expect(buildCardContent(c, 'minimal').signoff).toBe('Love, Sam');
   });
