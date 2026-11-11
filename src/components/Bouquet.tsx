@@ -1,94 +1,100 @@
 /**
- * A rose bouquet built from layered SVG parts placed at different depths (CSS 3D),
- * so it has real parallax when it sways. Decorative only (aria-hidden).
+ * A wrapped rose bouquet, drawn as layered SVG placed at different depths (CSS 3D) so it has
+ * real parallax when it sways: tall pink paper panels and gold-trimmed white sheets behind,
+ * a dense dome of red and peach roses, pink paper folds and a satin ribbon in front.
+ * Decorative only (aria-hidden).
  */
 
+type Tone = 'red' | 'pink';
 const PETAL = 'M0 -40 C 22 -41 39 -21 31 4 C 23 27 -23 27 -31 4 C -39 -21 -22 -41 0 -40Z';
 
-function Rose({ cls }: { cls: string }) {
-  const ring = (n: number, scale: number, offset: number, fill: string, shade: number) =>
-    Array.from({ length: n }, (_, i) => (
-      <g key={`${fill}${i}`} transform={`rotate(${offset + (360 / n) * i}) scale(${scale}) translate(0 -4)`}>
-        <path d={PETAL} fill={`url(#${fill})`} stroke="#6f0f2a" strokeOpacity={shade} strokeWidth="1" />
-        <path d="M-22 -30 C -10 -38 10 -38 22 -30" fill="none" stroke="#fff" strokeOpacity="0.32" strokeWidth="2.2" strokeLinecap="round" />
+function Rose({ x, y, r, rot, tone, i }: { x: number; y: number; r: number; rot: number; tone: Tone; i: number }) {
+  const ring = (n: number, scale: number, offset: number, fill: string) =>
+    Array.from({ length: n }, (_, k) => (
+      <g key={`${fill}${k}`} transform={`rotate(${offset + (360 / n) * k}) scale(${scale}) translate(0 -4)`}>
+        <path d={PETAL} fill={`url(#${tone}-${fill})`} stroke="#5e0b22" strokeOpacity="0.4" strokeWidth="1.1" />
+        <path d="M-20 -31 C -9 -38 9 -38 20 -31" fill="none" stroke="#fff" strokeOpacity="0.38" strokeWidth="3.4" strokeLinecap="round" />
       </g>
     ));
   return (
-    <svg className={`rose-svg ${cls}`} viewBox="-50 -50 100 100" focusable="false">
-      <ellipse cx="0" cy="40" rx="30" ry="6" fill="#38252B" opacity="0.18" />
-      {ring(6, 1, 0, 'roseOuter', 0.55)}
-      {ring(5, 0.74, 30, 'roseMid', 0.5)}
-      {ring(4, 0.5, 12, 'roseInner', 0.5)}
-      <circle r="9" fill="url(#roseInner)" />
-      <path d="M0 0 c 3 -5 10 -2 8 4 c -2 6 -11 4 -12 -3 c -1 -8 8 -11 14 -6" fill="none" stroke="#7d1230" strokeWidth="1.8" strokeLinecap="round" />
-    </svg>
+    <g transform={`translate(${x} ${y}) rotate(${rot}) scale(${r / 40})`}>
+      <g className="rose-pop" style={{ animationDelay: `${1.05 + (i % 9) * 0.07}s` }}>
+        {ring(6, 1, 0, 'o')}
+        {ring(5, 0.74, 30, 'm')}
+        {ring(4, 0.5, 12, 'n')}
+        <circle r="8" fill={`url(#${tone}-n)`} />
+        <path d="M0 0 c 3 -5 10 -2 8 4 c -2 6 -11 4 -12 -3 c -1 -8 8 -11 14 -6" fill="none" stroke="#5e0b22" strokeOpacity="0.8" strokeWidth="2.4" strokeLinecap="round" />
+      </g>
+    </g>
   );
 }
+
+// [x, y, size, rotation, tone]. Back rows first, front rows last so lower roses overlap upper ones.
+const BACK: Array<[number, number, number, number, Tone]> = [
+  [80, 88, 17, -10, 'red'], [102, 80, 18, 6, 'pink'], [124, 86, 17, 12, 'red'], [64, 102, 16, -20, 'pink'],
+  [91, 100, 18, 0, 'red'], [114, 99, 18, 15, 'red'], [138, 102, 16, -8, 'red'],
+];
+const FRONT: Array<[number, number, number, number, Tone]> = [
+  [56, 118, 17, 8, 'red'], [78, 116, 19, -5, 'red'], [101, 115, 19, 12, 'red'], [124, 114, 19, -12, 'pink'], [146, 118, 17, 6, 'red'],
+  [67, 136, 18, 10, 'red'], [90, 135, 19, -8, 'pink'], [113, 135, 19, 3, 'red'], [135, 136, 18, -14, 'red'],
+  [79, 152, 16, -6, 'red'], [101, 153, 17, 20, 'red'], [123, 152, 16, 9, 'red'],
+];
 
 export function Bouquet() {
   return (
     <div className="bq3d" aria-hidden="true">
-      {/* Shared gradients */}
       <svg width="0" height="0" className="bq-defs" focusable="false">
         <defs>
-          <radialGradient id="roseOuter" cx="50%" cy="60%" r="65%">
-            <stop offset="0" stopColor="#E9577A" />
-            <stop offset="0.65" stopColor="#C42B52" />
-            <stop offset="1" stopColor="#8F1836" />
-          </radialGradient>
-          <radialGradient id="roseMid" cx="50%" cy="55%" r="65%">
-            <stop offset="0" stopColor="#F27A98" />
-            <stop offset="0.7" stopColor="#D13A60" />
-            <stop offset="1" stopColor="#A81F44" />
-          </radialGradient>
-          <radialGradient id="roseInner" cx="45%" cy="40%" r="70%">
-            <stop offset="0" stopColor="#F9A0B5" />
-            <stop offset="0.7" stopColor="#DB4D70" />
-            <stop offset="1" stopColor="#B02448" />
-          </radialGradient>
-          <linearGradient id="leafG" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="#7DB77A" />
-            <stop offset="1" stopColor="#3F7A4A" />
-          </linearGradient>
-          <linearGradient id="paperG" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0" stopColor="#F9CBD9" />
-            <stop offset="0.5" stopColor="#FFF0F4" />
-            <stop offset="1" stopColor="#F2B4C6" />
-          </linearGradient>
+          {/* red roses */}
+          <radialGradient id="red-o" cx="50%" cy="60%" r="65%"><stop offset="0" stopColor="#E23B5B" /><stop offset="0.65" stopColor="#BE1E3F" /><stop offset="1" stopColor="#7E0F29" /></radialGradient>
+          <radialGradient id="red-m" cx="50%" cy="55%" r="65%"><stop offset="0" stopColor="#EC4A68" /><stop offset="0.7" stopColor="#C9254A" /><stop offset="1" stopColor="#8C1230" /></radialGradient>
+          <radialGradient id="red-n" cx="45%" cy="40%" r="70%"><stop offset="0" stopColor="#F26B84" /><stop offset="0.7" stopColor="#CF2F52" /><stop offset="1" stopColor="#9A1736" /></radialGradient>
+          {/* pink-peach roses */}
+          <radialGradient id="pink-o" cx="50%" cy="60%" r="65%"><stop offset="0" stopColor="#FFC2B3" /><stop offset="0.65" stopColor="#F59A98" /><stop offset="1" stopColor="#D9697A" /></radialGradient>
+          <radialGradient id="pink-m" cx="50%" cy="55%" r="65%"><stop offset="0" stopColor="#FFD2C4" /><stop offset="0.7" stopColor="#F7A7A3" /><stop offset="1" stopColor="#DC7384" /></radialGradient>
+          <radialGradient id="pink-n" cx="45%" cy="40%" r="70%"><stop offset="0" stopColor="#FFE3D8" /><stop offset="0.7" stopColor="#F9B3AE" /><stop offset="1" stopColor="#E0808F" /></radialGradient>
+          {/* paper */}
+          <linearGradient id="paperPink" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#F8BCD0" /><stop offset="1" stopColor="#EE98B3" /></linearGradient>
+          <linearGradient id="paperPink2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#F4A9C0" /><stop offset="0.5" stopColor="#FAC9D9" /><stop offset="1" stopColor="#F0A0B8" /></linearGradient>
+          <linearGradient id="paperWhite" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#FFFFFF" /><stop offset="1" stopColor="#FBE5EC" /></linearGradient>
+          <linearGradient id="satin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#FCD6E2" /><stop offset="0.5" stopColor="#F6B4C8" /><stop offset="1" stopColor="#EE9DB6" /></linearGradient>
         </defs>
       </svg>
       <div className="bq-sway">
-        {/* Back layer: stems, leaves, baby's breath */}
-        <svg className="bq-layer bq-back" viewBox="0 0 200 240" focusable="false">
-          <g stroke="#3F7A4A" strokeWidth="3.2" strokeLinecap="round" fill="none">
-            <path d="M100 220 C 100 170 100 120 100 78" />
-            <path d="M96 220 C 80 170 62 130 54 100" />
-            <path d="M104 220 C 120 170 140 130 148 100" />
-          </g>
-          <g fill="url(#leafG)">
-            <path d="M100 150 C 70 142 52 150 40 168 C 66 176 90 168 100 150Z" />
-            <path d="M102 140 C 132 130 152 138 164 156 C 138 164 112 158 102 140Z" />
-            <path d="M92 108 C 72 96 56 98 44 110 C 60 120 80 120 92 108Z" />
-            <path d="M110 104 C 130 94 148 96 158 108 C 142 118 122 118 110 104Z" />
-          </g>
-          <g fill="#fff" opacity="0.9">
-            {[[30, 60], [38, 52], [24, 74], [172, 56], [166, 66], [178, 80], [62, 26], [138, 22], [150, 34]].map(([x, y], i) => (
-              <circle key={i} cx={x} cy={y} r={i % 2 ? 2.4 : 3.2} />
+        {/* Back: tall paper panels and trimmed sheets */}
+        <svg className="bq-layer bq-back" viewBox="0 0 200 280" focusable="false">
+          <path d="M20 100 L56 50 L86 68 L52 146Z" fill="url(#paperWhite)" stroke="#E9B84A" strokeWidth="3" strokeLinejoin="round" />
+          <path d="M180 100 L144 50 L114 68 L148 146Z" fill="url(#paperWhite)" stroke="#E9B84A" strokeWidth="3" strokeLinejoin="round" />
+          <path d="M52 58 L94 38 L98 156 L56 156Z" fill="url(#paperPink)" />
+          <path d="M148 58 L106 38 L102 156 L144 156Z" fill="url(#paperPink)" />
+          <path d="M90 22 L132 24 L136 156 L88 156Z" fill="url(#paperPink2)" stroke="#fff" strokeOpacity="0.35" strokeWidth="1.5" />
+          <g fill="#fff" opacity="0.55">
+            {[[70, 70], [78, 96], [60, 110], [118, 56], [124, 84], [112, 120], [136, 70], [144, 98], [100, 46]].map(([x, y], i) => (
+              <circle key={i} cx={x} cy={y} r={i % 3 ? 1.6 : 2.4} />
             ))}
           </g>
         </svg>
-        {/* Roses at different depths */}
-        <div className="bq-rose r-left"><Rose cls="rot-a" /></div>
-        <div className="bq-rose r-right"><Rose cls="rot-b" /></div>
-        <div className="bq-rose r-mid"><Rose cls="rot-c" /></div>
-        {/* Front layer: paper wrap and ribbon */}
-        <svg className="bq-layer bq-front" viewBox="0 0 200 240" focusable="false">
-          <path d="M52 150 L148 150 L116 236 L84 236Z" fill="url(#paperG)" stroke="#E8B4C4" strokeWidth="1.5" />
-          <path d="M52 150 L100 168 L148 150" fill="none" stroke="#E8B4C4" strokeWidth="1.5" />
-          <path d="M100 168 L100 236" stroke="#E8B4C4" strokeWidth="1" opacity="0.7" />
-          <g transform="translate(100 176)">
-            <path d="M0 0 C -14 -16 -30 -4 -22 8 C -16 16 -4 8 0 0Z M0 0 C 14 -16 30 -4 22 8 C 16 16 4 8 0 0Z" fill="#B52346" />
-            <circle r="5" fill="#8F1836" />
+        {/* Roses: two depths for parallax */}
+        <svg className="bq-layer bq-roses-back" viewBox="0 0 200 280" focusable="false">
+          {BACK.map(([x, y, r, rot, tone], i) => <Rose key={i} x={x} y={y} r={r} rot={rot} tone={tone} i={i} />)}
+        </svg>
+        <svg className="bq-layer bq-roses-front" viewBox="0 0 200 280" focusable="false">
+          {FRONT.map(([x, y, r, rot, tone], i) => <Rose key={i} x={x} y={y} r={r} rot={rot} tone={tone} i={i + 3} />)}
+        </svg>
+        {/* Front: paper folds, trimmed sheet, handle and ribbon */}
+        <svg className="bq-layer bq-front" viewBox="0 0 200 280" focusable="false">
+          <path d="M26 122 C 42 112 64 132 82 164 L70 186 C 50 168 32 148 26 122Z" fill="url(#paperPink)" stroke="#E58AA8" strokeWidth="1.2" />
+          <path d="M174 122 C 158 112 136 132 118 164 L130 186 C 150 168 168 148 174 122Z" fill="url(#paperPink)" stroke="#E58AA8" strokeWidth="1.2" />
+          <path d="M62 156 C 84 170 116 170 138 156 L128 192 C 112 202 88 202 72 192Z" fill="url(#paperWhite)" stroke="#E9B84A" strokeWidth="2.6" strokeLinejoin="round" />
+          <path d="M70 192 C 88 204 112 204 130 192 L118 272 L82 272Z" fill="url(#paperPink2)" stroke="#E58AA8" strokeWidth="1.2" />
+          <path d="M92 204 L88 268 M108 204 L112 268" stroke="#fff" strokeOpacity="0.4" strokeWidth="1.5" />
+          {/* satin ribbon bow */}
+          <g transform="translate(100 214)">
+            <path d="M0 0 C -30 -22 -44 6 -20 12 C -8 14 -2 6 0 0Z" fill="url(#satin)" stroke="#E58AA8" strokeWidth="1" />
+            <path d="M0 0 C 30 -22 44 6 20 12 C 8 14 2 6 0 0Z" fill="url(#satin)" stroke="#E58AA8" strokeWidth="1" />
+            <path d="M-2 4 C -14 22 -22 40 -26 58 L-14 56 C -10 40 -6 24 2 6Z" fill="url(#satin)" stroke="#E58AA8" strokeWidth="1" />
+            <path d="M2 4 C 14 22 22 40 26 58 L14 56 C 10 40 6 24 -2 6Z" fill="url(#satin)" stroke="#E58AA8" strokeWidth="1" />
+            <circle r="6" fill="#F4A6BE" stroke="#E58AA8" strokeWidth="1" />
           </g>
         </svg>
       </div>
