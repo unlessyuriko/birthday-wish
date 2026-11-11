@@ -32,11 +32,16 @@ describe('full journey (jsdom, click only)', () => {
     click('Obviously me');
     click('On to the evidence');
 
-    // memories optional: flip one (photo only, no text), then continue
-    const mem = screen.getAllByRole('button', { pressed: false }).find((b) => b.className.includes('mem'))!;
-    fireEvent.click(mem);
-    expect(mem.getAttribute('aria-pressed')).toBe('true');
-    expect(screen.queryByText(/caption/i)).toBeNull();
+    // The button stays locked until every memory has been flipped (photo only, no text)
+    const locked = screen.getByRole('button', { name: /Flip all 3 memories \(0 of 3\)/ });
+    expect((locked as HTMLButtonElement).disabled).toBe(true);
+    for (let i = 0; i < 3; i++) {
+      const mem = screen.getAllByRole('button', { pressed: false }).find((b) => b.className.includes('mem') && !b.className.includes('mem-'))!;
+      fireEvent.click(mem);
+      expect(mem.getAttribute('aria-pressed')).toBe('true');
+      expect(screen.queryByText(/caption/i)).toBeNull();
+      if (i < 2) fireEvent.click(screen.getByRole('button', { name: 'Next memory' }));
+    }
     expect(screen.getAllByRole('img').some((i) => /selfie/i.test(i.getAttribute('alt') ?? ''))).toBe(true);
     click('A birthday wish next');
 

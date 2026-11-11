@@ -4,6 +4,7 @@ import { prefetchCake3D } from '../components/CakeAuto';
 import { Photo } from '../components/Photo';
 import { SceneHeading } from '../components/ui';
 import { fitBox, useSize } from '../components/useSize';
+import { TOTAL_MEMORIES } from '../state/journey';
 import type { SceneProps } from './types';
 
 const FALLBACK_TEASERS = ['Every moment with you is my favourite.', 'You make ordinary days feel like magic.', 'Still falling for you, every single day.'];
@@ -17,6 +18,8 @@ export function Scene3({ state, dispatch, config }: SceneProps) {
   useEffect(() => {
     prefetchCake3D(); // warm up the 3D candles for the next step
   }, []);
+  const seen = state.seenMemories.length;
+  const allSeen = seen >= Math.min(total, TOTAL_MEMORIES);
   const go = (n: number) => setIdx((n + total) % total);
 
   return (
@@ -75,7 +78,7 @@ export function Scene3({ state, dispatch, config }: SceneProps) {
         </button>
         <div className="mem-dots" role="group" aria-label="Choose a memory">
           {config.memories.map((m, i) => (
-            <button key={m.id} type="button" className="mem-dot" aria-label={`Memory ${i + 1} of ${total}`} aria-current={i === idx ? 'true' : undefined} onClick={() => go(i)}>
+            <button key={m.id} type="button" className={`mem-dot ${state.seenMemories.includes(m.id) ? 'seen' : ''}`} aria-label={`Memory ${i + 1} of ${total}${state.seenMemories.includes(m.id) ? ', seen' : ''}`} aria-current={i === idx ? 'true' : undefined} onClick={() => go(i)}>
               <span />
             </button>
           ))}
@@ -84,9 +87,10 @@ export function Scene3({ state, dispatch, config }: SceneProps) {
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" /></svg>
         </button>
       </div>
-      <button type="button" className="btn primary" onClick={() => dispatch({ type: 'next', from: 3 })}>
-        A birthday wish next
+      <button type="button" className="btn primary" disabled={!allSeen} onClick={() => dispatch({ type: 'next', from: 3 })}>
+        {allSeen ? 'A birthday wish next' : `Flip all ${total} memories (${seen} of ${total})`}
       </button>
+      <div role="status" aria-live="polite" className="sr-only">{allSeen ? 'All memories seen. You can continue.' : ''}</div>
     </section>
   );
 }

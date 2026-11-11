@@ -34,12 +34,15 @@ describe('journey state', () => {
   it('requires a pick before leaving a decision', () => {
     expect(run({ ...initialState, scene: 2 }, { type: 'next', from: 2 }).decisionIndex).toBe(0);
   });
-  it('memories toggle and are never required', () => {
+  it('memories toggle, and Continue unlocks only once all three have been seen', () => {
     let s: JourneyState = { ...initialState, scene: 3 };
     s = run(s, { type: 'toggleMemory', id: 'm1' });
     expect(s.openedMemories).toEqual(['m1']);
     s = run(s, { type: 'toggleMemory', id: 'm1' });
     expect(s.openedMemories).toEqual([]);
+    expect(s.seenMemories).toEqual(['m1']); // still counted as seen after flipping back
+    expect(run(s, { type: 'next', from: 3 }).scene).toBe(3);
+    s = run(s, { type: 'toggleMemory', id: 'm2' }, { type: 'toggleMemory', id: 'm3' });
     expect(run(s, { type: 'next', from: 3 }).scene).toBe(4);
   });
   it('candles need the wish first and fire celebration once', () => {

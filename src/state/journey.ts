@@ -10,6 +10,8 @@ export type JourneyState = {
   decisionIndex: number; // 0 to 2
   prefs: Prefs;
   openedMemories: string[];
+  /** Memories that have been flipped at least once (stays true even if flipped back). */
+  seenMemories: string[];
   wishReady: boolean;
   candlesOut: boolean;
   confettiPending: boolean;
@@ -20,6 +22,7 @@ export type JourneyState = {
 export const TOTAL_SCENES = 6;
 export const TOTAL_DECISIONS = 3;
 export const TOTAL_GATE = 3;
+export const TOTAL_MEMORIES = 3;
 
 export const initialState: JourneyState = {
   scene: 1,
@@ -28,6 +31,7 @@ export const initialState: JourneyState = {
   decisionIndex: 0,
   prefs: {},
   openedMemories: [],
+  seenMemories: [],
   wishReady: false,
   candlesOut: false,
   confettiPending: false,
@@ -68,6 +72,7 @@ export function journeyReducer(s: JourneyState, a: Action): JourneyState {
       }
       if (s.scene === 1 && !s.envelopeOpen) return s;
       if (s.scene === 2 && !s.prefs[PREF_KEYS[s.decisionIndex]]) return s;
+      if (s.scene === 3 && s.seenMemories.length < TOTAL_MEMORIES) return s; // every memory must be flipped first
       if (s.scene === 4 && !s.candlesOut) return s;
       return s.scene < TOTAL_SCENES ? { ...s, scene: s.scene + 1 } : s;
     }
@@ -75,14 +80,15 @@ export function journeyReducer(s: JourneyState, a: Action): JourneyState {
       if (s.scene === 2 && s.decisionIndex > 0) return { ...s, decisionIndex: s.decisionIndex - 1 };
       if (s.scene === 3) return { ...s, scene: 2, decisionIndex: TOTAL_DECISIONS - 1 };
       return s.scene > 1 ? { ...s, scene: s.scene - 1 } : s;
-    case 'toggleMemory':
+    case 'toggleMemory': {
       if (s.scene !== 3) return s;
+      const opening = !s.openedMemories.includes(a.id);
       return {
         ...s,
-        openedMemories: s.openedMemories.includes(a.id)
-          ? s.openedMemories.filter((x) => x !== a.id)
-          : [...s.openedMemories, a.id],
+        openedMemories: opening ? [...s.openedMemories, a.id] : s.openedMemories.filter((x) => x !== a.id),
+        seenMemories: opening && !s.seenMemories.includes(a.id) ? [...s.seenMemories, a.id] : s.seenMemories,
       };
+    }
     case 'wishReady':
       return s.scene === 4 ? { ...s, wishReady: true } : s;
     case 'blowCandles':

@@ -34,6 +34,9 @@ The card now fills the screen on phones, with the picture centred in the free sp
 ## Decision card, self-fitting art, yellow roses (added)
 Step 2 uses icon tiles in a pink decision card that shares the available height; the cake, gift and envelope art scale themselves to the free space (no empty bands, no overlap). Re-measured after these changes at 390x844, 390x664, 375x667, 360x640, 412x780 and 320x568: no step scrolls. Screens were also reviewed by screenshot at 570x880. The bouquet roses are now golden yellow (3D and the SVG fallback); colour checked by screenshot only.
 
+## Memory lock (added)
+"A birthday wish next" stays disabled, with a live "Flip all 3 memories (n of 3)" count, until each of the three photos has been flipped at least once (flipping back still counts). Checked in a real browser on a Pixel 5 profile, plus unit and journey tests.
+
 ## Not verified
 - Real iOS Safari, real Android Chrome, messaging-app browsers, and real download behaviour on mobile devices (the fallback "press and hold to save" path is implemented but untested).
 - Export with a real share photo (none supplied), long names/captions on the card (layout logic is unit-tested, not visually checked).

@@ -527,3 +527,9 @@ body {
 
 /* Once the gift is open the letter gets the whole card */
 .scene.gift-open .hero-art { display: none; }
+
+/* Memory dots show which photos have been seen */
+.mem-dot.seen span { background: var(--primary); opacity: 0.45; }
+.mem-dot.seen[aria-current="true"] span { opacity: 1; }
+.btn.primary:disabled { background: #D9B3BE; box-shadow: 0 3px 0 #B98C9A; color: #fff; opacity: 1; cursor: not-allowed; }
+.btn.primary:disabled::after { display: none; }
