@@ -46,9 +46,9 @@ export function Stationery({ variant = 0 }: { variant?: number }) {
 
 export function Envelope({ open, children }: { open: boolean; children?: React.ReactNode }) {
   return (
-    <div className={`envelope ${open ? 'is-open' : ''}`} aria-hidden={children ? undefined : true}>
+    <div className={`envelope ${open ? 'is-open' : ''}`} aria-hidden="true">
       <div className="env-back" />
-      <div className="env-letter">{children}</div>
+      <div className="env-pop">{children}</div>
       <div className="env-front" />
       <div className="env-flap" />
       <div className="env-seal"><Heart size={22} color="#fff" /></div>

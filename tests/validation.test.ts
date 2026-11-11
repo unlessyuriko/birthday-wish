@@ -3,7 +3,7 @@ import { config as base } from '../src/content/birthday.config';
 import type { BirthdayConfig } from '../src/content/types';
 import { FORBIDDEN_DASH, hasForbiddenDash, sanitizeDeep, stripForbiddenDash, collectStrings } from '../src/validation/text';
 import { complimentsEnabled, surpriseIsValid, validateConfig } from '../src/validation/validate';
-import { decisions, gateQuestions, qualifications, privileges } from '../src/content/copy';
+import { decisions, gateQuestions } from '../src/content/copy';
 
 const clone = (): BirthdayConfig => structuredClone(base);
 
@@ -22,7 +22,7 @@ describe('forbidden punctuation (U+2014)', () => {
     expect(validateConfig(c).warnings.some((w) => w.includes('long dash'))).toBe(true);
   });
   it('built-in copy and config contain none', () => {
-    const all = collectStrings([base, decisions, gateQuestions, qualifications, privileges]);
+    const all = collectStrings([base, decisions, gateQuestions]);
     expect(all.filter(([, s]) => hasForbiddenDash(s))).toEqual([]);
   });
 });

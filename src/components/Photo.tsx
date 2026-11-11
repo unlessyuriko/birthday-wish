@@ -13,8 +13,8 @@ export function Photo({ config, photoId, variant = 0 }: { config: BirthdayConfig
       alt={p.alt}
       loading="lazy"
       decoding="async"
-      width={400}
-      height={300}
+      width={300}
+      height={400}
       style={{ objectPosition: `${fp.x * 100}% ${fp.y * 100}%` }}
       onError={() => setFailed(true)}
     />

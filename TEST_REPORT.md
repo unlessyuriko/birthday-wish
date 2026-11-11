@@ -22,6 +22,9 @@ The Sound toggle was checked in Chromium and WebKit: audio starts only after the
 Scene 1 is now three playful checks with a "No" that dodges three times, then gives up and counts as yes (a deliberate change from the PRD's "no runaway buttons"; it never blocks, and keyboard or reduced-motion users get a still button that cycles the same lines). Heartbeat, ambient hearts, staggered entrances and button pulses were added; all are removed under reduced motion.
 Checked with Playwright device profiles using real touch taps through the whole journey: iPhone SE (320x568), iPhone 13, Pixel 5, Galaxy S9+, iPad Mini (WebKit/Chromium) and desktop Chrome. Results: no horizontal overflow on any scene, every button at least 44 px, keyboard focus preserved after answering, 1080x1920 PNG export on all, no console errors. Mouse dodging also checked in Chromium and WebKit. These are emulated devices, not physical ones.
 
+## Six scenes, photo flip cards, rose bouquet (added)
+Scene 5 (the application) was removed, so the journey has six scenes. The flip cards are photo-only, with a decorative cover. The three selfies were resized to under 1000 px wide and re-saved without EXIF or GPS data. The envelope now releases a layered 3D rose bouquet (CSS 3D parallax, sway, falling petals; static under reduced motion). Visual checks were by screenshot in Chromium only; the bouquet in WebKit and Firefox was not viewed.
+
 ## Not verified
 - Real iOS Safari, real Android Chrome, messaging-app browsers, and real download behaviour on mobile devices (the fallback "press and hold to save" path is implemented but untested).
 - Export with a real share photo (none supplied), long names/captions on the card (layout logic is unit-tested, not visually checked).

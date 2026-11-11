@@ -1,10 +1,9 @@
 import type { StyleId } from '../content/copy';
 
 export type Prefs = { dateMood?: string; need?: string; spoiled?: string };
-export type ApplicationState = 'none' | 'qualifications' | 'approved';
 
 export type JourneyState = {
-  scene: number; // 1 to 7
+  scene: number; // 1 to 6
   /** Number of gate questions answered (0 to 3). */
   gate: number;
   envelopeOpen: boolean;
@@ -14,12 +13,11 @@ export type JourneyState = {
   wishReady: boolean;
   candlesOut: boolean;
   confettiPending: boolean;
-  application: ApplicationState;
   giftOpen: boolean;
   cardStyle: StyleId;
 };
 
-export const TOTAL_SCENES = 7;
+export const TOTAL_SCENES = 6;
 export const TOTAL_DECISIONS = 3;
 export const TOTAL_GATE = 3;
 
@@ -33,7 +31,6 @@ export const initialState: JourneyState = {
   wishReady: false,
   candlesOut: false,
   confettiPending: false,
-  application: 'none',
   giftOpen: false,
   cardStyle: 'romantic',
 };
@@ -48,8 +45,6 @@ export type Action =
   | { type: 'wishReady' }
   | { type: 'blowCandles' }
   | { type: 'confettiDone' }
-  | { type: 'qualifications' }
-  | { type: 'approve' }
   | { type: 'openGift' }
   | { type: 'setStyle'; style: StyleId }
   | { type: 'replay' };
@@ -95,14 +90,10 @@ export function journeyReducer(s: JourneyState, a: Action): JourneyState {
       return s.scene === 4 && s.wishReady && !s.candlesOut ? { ...s, candlesOut: true, confettiPending: true } : s;
     case 'confettiDone':
       return s.confettiPending ? { ...s, confettiPending: false } : s;
-    case 'qualifications':
-      return s.scene === 5 && s.application === 'none' ? { ...s, application: 'qualifications' } : s;
-    case 'approve':
-      return s.scene === 5 ? { ...s, application: 'approved' } : s;
     case 'openGift':
-      return s.scene === 6 ? { ...s, giftOpen: true } : s;
+      return s.scene === 5 ? { ...s, giftOpen: true } : s;
     case 'setStyle':
-      return s.scene === 7 ? { ...s, cardStyle: a.style } : s;
+      return s.scene === 6 ? { ...s, cardStyle: a.style } : s;
     case 'replay':
       return { ...initialState };
     default:

@@ -1,10 +1,10 @@
+import { Heart } from '../components/Art';
 import { Photo } from '../components/Photo';
 import { SceneHeading } from '../components/ui';
 import type { SceneProps } from './types';
 
-const PROMPTS = ["A moment I'd happily repeat.", 'A tiny thing about you I love.', 'My favourite kind of ordinary day.'];
-
 export function Scene3({ state, dispatch, config }: SceneProps) {
+  const total = config.memories.length;
   return (
     <section className="scene" aria-label="Evidence">
       <SceneHeading>Evidence that you're my favourite person</SceneHeading>
@@ -12,26 +12,26 @@ export function Scene3({ state, dispatch, config }: SceneProps) {
       <ul className="memories">
         {config.memories.map((m, i) => {
           const flipped = state.openedMemories.includes(m.id);
-          const title = PROMPTS[i] ?? m.title;
           return (
             <li key={m.id}>
               <button
                 type="button"
                 className={`mem ${flipped ? 'flipped' : ''}`}
-                style={{ ['--tilt' as string]: `${[-2, 1.5, -1][i % 3]}deg` }}
+                style={{ ['--tilt' as string]: `${[-2.5, 2, -1.5][i % 3]}deg` }}
                 aria-pressed={flipped}
                 onClick={() => dispatch({ type: 'toggleMemory', id: m.id })}
               >
                 <span className="mem-inner">
+                  {/* Front: a decorative cover. Only the visible face is exposed to assistive tech. */}
                   <span className={`mem-face mem-front ${flipped ? 'is-hidden' : ''}`} aria-hidden={flipped}>
-                    <span className="mem-photo"><Photo config={config} photoId={m.photoId} variant={i} /></span>
-                    <span className="mem-title">{title}</span>
-                    <span className="mem-hint">Tap to flip</span>
+                    <span className="sr-only">Memory {i + 1} of {total}. Tap to see it.</span>
+                    <span className="cover-heart" aria-hidden="true"><Heart size={34} color="#B52346" /></span>
+                    <span className="cover-num" aria-hidden="true">{i + 1}</span>
+                    <span className="cover-tape" aria-hidden="true" />
                   </span>
+                  {/* Back: the photo only, no text. */}
                   <span className={`mem-face mem-back ${flipped ? '' : 'is-hidden'}`} aria-hidden={!flipped}>
-                    <span className="mem-title small">{title}</span>
-                    <span className="mem-caption">{m.caption}</span>
-                    <span className="mem-hint">Tap to flip back</span>
+                    <Photo config={config} photoId={m.photoId} variant={i} />
                   </span>
                 </span>
               </button>

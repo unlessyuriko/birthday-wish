@@ -10,7 +10,6 @@ import { Scene3 } from './scenes/Scene3';
 import { Scene4 } from './scenes/Scene4';
 import { Scene5 } from './scenes/Scene5';
 import { Scene6 } from './scenes/Scene6';
-import { Scene7 } from './scenes/Scene7';
 
 export function App() {
   // Client content is rendered as text only, and the forbidden dash is converted before use.
@@ -51,9 +50,8 @@ export function App() {
     <Scene2 key={2} {...common} />,
     <Scene3 key={3} {...common} />,
     <Scene4 key={4} {...common} />,
-    <Scene5 key={5} {...common} />,
-    <Scene6 key={6} {...common} onMediaPlaying={setMediaPlaying} />,
-    <Scene7 key={7} {...common} onReplay={replay} />,
+    <Scene5 key={5} {...common} onMediaPlaying={setMediaPlaying} />,
+    <Scene6 key={6} {...common} onReplay={replay} />,
   ][state.scene - 1];
 
   useEffect(() => {

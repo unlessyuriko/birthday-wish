@@ -11,25 +11,31 @@ import type { BirthdayConfig } from './types';
 export const config: BirthdayConfig = {
   mode: 'preview',
   recipient: {
-    name: '[Her Name]',
-    nickname: '[Her Nickname]',
+    name: 'Ma',
+    nickname: 'Ma',
     birthdayLabel: undefined, // e.g. '12 March'. Leave undefined to hide.
     age: undefined, // Omitted by default.
   },
-  sender: { name: '[His Name]' },
+  sender: { name: 'Mg' },
   locale: 'en',
 
-  // Add photos to public/assets/photos/ and list them here. allowShare=false keeps a photo off the exported card.
+  // Photos live in public/assets/photos/. allowShare=false keeps a photo off the exported card.
+  // focalPoint (0 to 1) keeps faces inside the crop.
   photos: [
-    // { id: 'p1', src: 'assets/photos/p1.jpg', alt: 'Describe the photo', allowShare: true, focalPoint: { x: 0.5, y: 0.4 } },
+    { id: 'selfie-1', src: 'assets/photos/selfie-1.jpg', alt: 'A close selfie of the two of you smiling, cheek to cheek, with floral wallpaper behind.', allowShare: false, focalPoint: { x: 0.5, y: 0.4 } },
+    { id: 'selfie-2', src: 'assets/photos/selfie-2.jpg', alt: 'A mirror selfie of the two of you in a softly lit hallway, with a phone covering part of your faces.', allowShare: false, focalPoint: { x: 0.52, y: 0.4 } },
+    { id: 'selfie-3', src: 'assets/photos/selfie-3.jpg', alt: 'A smiling selfie of the two of you in front of a colourful painted mural.', allowShare: false, focalPoint: { x: 0.45, y: 0.4 } },
   ],
+  // The envelope now shows a rose bouquet instead of a photo, so no hero photo is set.
   heroPhotoId: undefined,
+  // Set to one of the photo ids (and its allowShare to true) only if the client agrees to a photo on the shareable card.
   sharePhotoId: undefined,
 
+  // Photo-only flip cards, in order. The back shows just the selfie, with no text.
   memories: [
-    { id: 'm1', title: "A moment I'd happily repeat.", caption: '[Add a real caption for this memory.]' },
-    { id: 'm2', title: 'A tiny thing about you I love.', caption: '[Add a real caption for this memory.]' },
-    { id: 'm3', title: 'My favourite kind of ordinary day.', caption: '[Add a real caption for this memory.]' },
+    { id: 'm1', photoId: 'selfie-1' },
+    { id: 'm2', photoId: 'selfie-2' },
+    { id: 'm3', photoId: 'selfie-3' },
   ],
 
   // Suggested draft, pending approval.
@@ -40,7 +46,7 @@ export const config: BirthdayConfig = {
       "I hope this year brings you things you've been quietly wishing for. I'll be here, cheering you on and finding new ways to make you smile.",
       "Today is yours. I'm just very lucky to be part of it.",
     ],
-    signOff: 'Love, [His Name]',
+    signOff: 'Love, Mg',
   },
 
   // Only add if there is a real, confirmed surprise. Otherwise leave undefined.
@@ -57,5 +63,5 @@ export const config: BirthdayConfig = {
     '[Add another specific, affectionate compliment.]',
   ],
 
-  features: { relationshipJoke: true, emergencyCompliments: true, music: true },
+  features: { emergencyCompliments: true, music: true },
 };

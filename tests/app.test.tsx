@@ -10,7 +10,7 @@ const click = (name: string | RegExp) => fireEvent.click(screen.getByRole('butto
 describe('full journey (jsdom, click only)', () => {
   it('walks scenes 1 to 7 and replays', () => {
     render(<App />);
-    expect(screen.getByText(/A little surprise, 1 of 7/)).toBeTruthy();
+    expect(screen.getByText(/A little surprise, 1 of 6/)).toBeTruthy();
     expect(screen.queryByRole('button', { name: 'Open my envelope' })).toBeNull();
     click("Yes, that's me");
     expect(screen.getByText(/The reason for this entire app/)).toBeTruthy();
@@ -32,10 +32,12 @@ describe('full journey (jsdom, click only)', () => {
     click('Obviously me');
     click('On to the evidence');
 
-    // memories optional: flip one, then continue
+    // memories optional: flip one (photo only, no text), then continue
     const mem = screen.getAllByRole('button', { pressed: false }).find((b) => b.className.includes('mem'))!;
     fireEvent.click(mem);
     expect(mem.getAttribute('aria-pressed')).toBe('true');
+    expect(screen.queryByText(/caption/i)).toBeNull();
+    expect(screen.getAllByRole('img').some((i) => /selfie/i.test(i.getAttribute('alt') ?? ''))).toBe(true);
     click('A birthday wish next');
 
     expect(screen.queryByRole('slider')).toBeNull();
@@ -44,24 +46,18 @@ describe('full journey (jsdom, click only)', () => {
     expect(screen.getByText('I hope it comes true.')).toBeTruthy();
     click("There's a little more");
 
-    click('What are your qualifications?');
-    expect(screen.getByText('Still very, very into you')).toBeTruthy();
-    click('Application approved');
-    expect(screen.getByText("Best news I've had all day.")).toBeTruthy();
-    click('Keep opening my birthday gift');
-
     click('Open your surprise');
     expect(screen.getByText(/Happy Birthday, my love/)).toBeTruthy();
     click("There's one little keepsake left");
 
-    expect(screen.getByText(/A little surprise, 7 of 7/)).toBeTruthy();
+    expect(screen.getByText(/A little surprise, 6 of 6/)).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Save my birthday card' })).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Emergency compliments' })).toBeTruthy();
     click('Back');
-    expect(screen.getByText(/6 of 7/)).toBeTruthy();
+    expect(screen.getByText(/5 of 6/)).toBeTruthy();
     click("There's one little keepsake left");
     click('Replay my surprise');
-    expect(screen.getByText(/1 of 7/)).toBeTruthy();
+    expect(screen.getByText(/1 of 6/)).toBeTruthy();
   });
 });
 

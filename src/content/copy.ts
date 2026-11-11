@@ -88,15 +88,6 @@ export const treats: Record<string, { badge: string; agenda: string }> = {
 };
 export const defaultTreat = treats.cake;
 
-export const qualifications = [
-  'Enthusiastic about you',
-  'Available for snack runs',
-  'Will take approximately 47 photos until you like one',
-  'Still very, very into you',
-];
-
-export const privileges = ['Cake: required', 'Hugs: unlimited', 'Being loved: ongoing', 'Choosing the music: granted'];
-
 export type StyleId = 'romantic' | 'funny' | 'minimal';
 export const cardStyles: Array<{ id: StyleId; label: string; hint: string }> = [
   { id: 'romantic', label: 'Soft and romantic', hint: 'Dreamy and tender' },

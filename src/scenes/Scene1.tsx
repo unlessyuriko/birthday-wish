@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Bear, Envelope, Heartbeat, HeartBurst } from '../components/Art';
 import { ChaseButton } from '../components/ChaseButton';
-import { Photo } from '../components/Photo';
+import { Bouquet } from '../components/Bouquet';
 import { Reaction, SceneHeading } from '../components/ui';
 import { gateQuestions } from '../content/copy';
 import { TOTAL_GATE } from '../state/journey';
@@ -21,14 +21,10 @@ export function Scene1({ state, dispatch, config }: SceneProps) {
 
   return (
     <section className="scene" aria-label="Special delivery">
-      <div className={`hero-art ${state.envelopeOpen ? '' : 'compact'}`}>
-        <Bear size={state.envelopeOpen ? 96 : 56} className="bear-bob" />
+      <div className={`hero-art ${state.envelopeOpen ? 'open' : 'compact'}`}>
+        {!state.envelopeOpen && <Bear size={56} className="bear-bob" />}
         <div className="env-scale">
-          <Envelope open={state.envelopeOpen}>
-            {state.envelopeOpen && config.heroPhotoId && (
-              <div className="env-photo"><Photo config={config} photoId={config.heroPhotoId} /></div>
-            )}
-          </Envelope>
+          <Envelope open={state.envelopeOpen}>{state.envelopeOpen && <Bouquet />}</Envelope>
         </div>
         <p className="envelope-to">For {config.recipient.nickname}</p>
       </div>

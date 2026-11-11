@@ -51,16 +51,19 @@ describe('journey state', () => {
     s = run(s, { type: 'confettiDone' }, { type: 'blowCandles' });
     expect(s.confettiPending).toBe(false);
   });
-  it('both approval paths and the neutral path reach the gift', () => {
-    const base: JourneyState = { ...initialState, scene: 5 };
-    expect(run(base, { type: 'approve' }).application).toBe('approved');
-    const q = run(base, { type: 'qualifications' });
-    expect(q.application).toBe('qualifications');
-    expect(run(q, { type: 'approve' }).application).toBe('approved');
-    expect(run(base, { type: 'next', from: 5 }).scene).toBe(6);
+  it('the journey has six scenes and stops at the last', () => {
+    let st: JourneyState = { ...initialState, scene: 6 };
+    expect(run(st, { type: 'next', from: 6 }).scene).toBe(6);
+    st = run({ ...initialState, scene: 4, wishReady: true, candlesOut: true }, { type: 'next', from: 4 });
+    expect(st.scene).toBe(5);
+  });
+  it('the gift opens on scene 5 and the card style changes on scene 6', () => {
+    expect(run({ ...initialState, scene: 5 }, { type: 'openGift' }).giftOpen).toBe(true);
+    expect(run({ ...initialState, scene: 6 }, { type: 'setStyle', style: 'minimal' }).cardStyle).toBe('minimal');
+    expect(run({ ...initialState, scene: 5 }, { type: 'setStyle', style: 'minimal' }).cardStyle).toBe('romantic');
   });
   it('replay resets everything', () => {
-    const s = run({ ...initialState, scene: 7, giftOpen: true, cardStyle: 'funny' }, { type: 'replay' });
+    const s = run({ ...initialState, scene: 6, giftOpen: true, cardStyle: 'funny' }, { type: 'replay' });
     expect(s).toEqual(initialState);
   });
   it('back from the first scene is a no-op', () => {

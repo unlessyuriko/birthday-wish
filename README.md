@@ -1,6 +1,6 @@
 # A Little Birthday Universe, Just for You
 
-A mobile-first, click-only birthday gift site. Seven scenes, three keepsake styles, real PNG export. No backend, login, analytics or tracking.
+A mobile-first, click-only birthday gift site. Six scenes, three keepsake styles, real PNG export. No backend, login, analytics or tracking.
 
 ## Run
 
@@ -16,17 +16,17 @@ npm run preview    # serve dist/ locally
 
 Everything personal is in **one file: `src/content/birthday.config.ts`**.
 
-- `mode: 'preview'` keeps the bracketed placeholders (such as `[Her Nickname]`) and builds fine.
+- `mode: 'preview'` allows bracketed placeholders (such as the two spare compliments) and builds fine.
 - `mode: 'production'` makes `npm run build` fail while any placeholder, missing caption, bad photo reference, or missing voice-note transcript remains.
-- Replace the three memory captions, the letter, names, and 3 or more compliments. Do not invent memories.
+- The three flip cards are photo-only (a decorative cover, then the selfie, no text). Each `memories` entry just needs a `photoId`.
+- Replace the letter and the spare compliments. Do not invent memories.
 - `surprise` is hidden unless `confirmed: true` with a title and description. Leave it `undefined` if there is no real surprise.
-- `features.relationshipJoke: false` swaps scene 5 for a simple privileges card.
 - The long dash character (U+2014) is converted to " - " at render time, and flagged as a validation warning.
 
 ## Replace assets
 
 1. Put photos in `public/assets/photos/` (compressed, about 1200px wide) and list them in `photos` with alt text.
-2. Set `heroPhotoId` (shown in the envelope and gift scenes) and optionally `sharePhotoId`.
+2. The envelope shows a 3D rose bouquet. `heroPhotoId` (optional) only adds a polaroid in the gift scene. `sharePhotoId` is optional.
 3. **Only a photo with `allowShare: true` that is also `sharePhotoId` is ever drawn on the exported card.** Otherwise the card is photo-free.
 4. Use `focalPoint` (0 to 1) so faces are not cropped.
 5. Audio goes in `public/assets/audio/`, video in `public/assets/video/`. Music is off by default and only starts after the sound toggle is pressed. Voice notes need a `transcript`; videos should have a captions file.

@@ -12,7 +12,8 @@ export type BirthdayConfig = {
   }>;
   heroPhotoId?: string;
   sharePhotoId?: string;
-  memories: Array<{ id: string; title: string; caption: string; photoId?: string }>;
+  /** Photo-only flip cards. Each needs a photo (the front is a decorative cover, no text on the back). */
+  memories: Array<{ id: string; photoId?: string }>;
   letter: { paragraphs: string[]; signOff: string };
   surprise?: {
     confirmed: boolean;
@@ -30,5 +31,5 @@ export type BirthdayConfig = {
     captionsSrc?: string;
   };
   compliments: string[];
-  features: { relationshipJoke: boolean; emergencyCompliments: boolean; music: boolean };
+  features: { emergencyCompliments: boolean; music: boolean };
 };

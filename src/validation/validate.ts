@@ -46,9 +46,8 @@ export function validateConfig(c: BirthdayConfig): ValidationResult {
 
   if (c.memories.length !== 3) errors.push('exactly 3 memories are required');
   for (const m of c.memories) {
-    if (m.photoId && !ids.has(m.photoId)) errors.push(`memories.${m.id}.photoId does not match any photo`);
-    if (!m.caption.trim()) issue(`memories.${m.id}.caption is missing`);
-    if (m.caption.length > 220) warnings.push(`memories.${m.id}.caption is over 220 characters`);
+    if (!m.photoId) issue(`memories.${m.id}.photoId is missing (the flip cards are photo-only)`);
+    else if (!ids.has(m.photoId)) errors.push(`memories.${m.id}.photoId does not match any photo`);
   }
 
   const words = wordCount(c.letter.paragraphs.join(' '));

@@ -16,7 +16,7 @@ describe('keepsake content', () => {
   it('never contains private letter, memory or surprise text', () => {
     const c = cfg();
     c.letter.paragraphs = ['SECRET-LETTER-TEXT'];
-    c.memories[0].caption = 'SECRET-MEMORY';
+    c.photos[0].alt = 'SECRET-ALT';
     c.surprise = { confirmed: true, title: 'SECRET-PLAN', description: 'SECRET-DESC', locationLabel: 'SECRET-PLACE' };
     for (const s of styles) {
       const text = JSON.stringify(buildCardContent(c, s, 'cake'));
