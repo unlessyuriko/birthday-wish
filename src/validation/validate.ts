@@ -46,6 +46,7 @@ export function validateConfig(c: BirthdayConfig): ValidationResult {
 
   if (c.memories.length !== 3) errors.push('exactly 3 memories are required');
   for (const m of c.memories) {
+    if (m.teaser && m.teaser.length > 70) warnings.push(`memories.${m.id}.teaser is over 70 characters`);
     if (!m.photoId) issue(`memories.${m.id}.photoId is missing (the flip cards are photo-only)`);
     else if (!ids.has(m.photoId)) errors.push(`memories.${m.id}.photoId does not match any photo`);
   }

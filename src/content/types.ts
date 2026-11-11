@@ -8,12 +8,15 @@ export type BirthdayConfig = {
     src: string;
     alt: string;
     allowShare: boolean;
+    /** Natural size in pixels. Lets the flip cards match each photo's proportions so nothing is cropped. */
+    width?: number;
+    height?: number;
     focalPoint?: { x: number; y: number };
   }>;
   heroPhotoId?: string;
   sharePhotoId?: string;
   /** Photo-only flip cards. Each needs a photo (the front is a decorative cover, no text on the back). */
-  memories: Array<{ id: string; photoId?: string }>;
+  memories: Array<{ id: string; photoId?: string; /** Short romantic line on the card cover, shown before flipping. */ teaser?: string }>;
   letter: { paragraphs: string[]; signOff: string };
   surprise?: {
     confirmed: boolean;

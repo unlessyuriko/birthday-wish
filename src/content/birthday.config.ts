@@ -22,20 +22,20 @@ export const config: BirthdayConfig = {
   // Photos live in public/assets/photos/. allowShare=false keeps a photo off the exported card.
   // focalPoint (0 to 1) keeps faces inside the crop.
   photos: [
-    { id: 'selfie-1', src: 'assets/photos/selfie-1.jpg', alt: 'A close selfie of the two of you smiling, cheek to cheek, with floral wallpaper behind.', allowShare: false, focalPoint: { x: 0.5, y: 0.4 } },
-    { id: 'selfie-2', src: 'assets/photos/selfie-2.jpg', alt: 'A mirror selfie of the two of you in a softly lit hallway, with a phone covering part of your faces.', allowShare: false, focalPoint: { x: 0.52, y: 0.4 } },
-    { id: 'selfie-3', src: 'assets/photos/selfie-3.jpg', alt: 'A smiling selfie of the two of you in front of a colourful painted mural.', allowShare: false, focalPoint: { x: 0.45, y: 0.4 } },
+    { id: 'selfie-1', src: 'assets/photos/selfie-1.jpg', alt: 'A close selfie of the two of you smiling, cheek to cheek, with floral wallpaper behind.', allowShare: false, width: 1000, height: 1333, focalPoint: { x: 0.5, y: 0.4 } },
+    { id: 'selfie-2', src: 'assets/photos/selfie-2.jpg', alt: 'A mirror selfie of the two of you in a softly lit hallway, with a phone covering part of your faces.', allowShare: false, width: 933, height: 1400, focalPoint: { x: 0.52, y: 0.4 } },
+    { id: 'selfie-3', src: 'assets/photos/selfie-3.jpg', alt: 'A smiling selfie of the two of you in front of a colourful painted mural.', allowShare: false, width: 1000, height: 1333, focalPoint: { x: 0.45, y: 0.4 } },
   ],
   // The envelope now shows a rose bouquet instead of a photo, so no hero photo is set.
   heroPhotoId: undefined,
   // Set to one of the photo ids (and its allowShare to true) only if the client agrees to a photo on the shareable card.
   sharePhotoId: undefined,
 
-  // Photo-only flip cards, in order. The back shows just the selfie, with no text.
+  // Flip cards, in order. The cover shows the romantic teaser line; the back shows just the whole selfie, with no text.
   memories: [
-    { id: 'm1', photoId: 'selfie-1' },
-    { id: 'm2', photoId: 'selfie-2' },
-    { id: 'm3', photoId: 'selfie-3' },
+    { id: 'm1', photoId: 'selfie-1', teaser: 'Every moment with you is my favourite.' },
+    { id: 'm2', photoId: 'selfie-2', teaser: 'You make ordinary days feel like magic.' },
+    { id: 'm3', photoId: 'selfie-3', teaser: 'Still falling for you, every single day.' },
   ],
 
   // Suggested draft, pending approval.
