@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Bear, Envelope, Heartbeat, HeartBurst } from '../components/Art';
 import { ChaseButton } from '../components/ChaseButton';
-import { Bouquet } from '../components/Bouquet';
+import { BouquetAuto, prefetchBouquet3D } from '../components/BouquetAuto';
 import { Reaction, SceneHeading } from '../components/ui';
 import { gateQuestions } from '../content/copy';
 import { TOTAL_GATE } from '../state/journey';
@@ -10,6 +10,10 @@ import type { SceneProps } from './types';
 export function Scene1({ state, dispatch, config }: SceneProps) {
   const [line, setLine] = useState<string>();
   const [burst, setBurst] = useState(0);
+  // Warm up the 3D bouquet while the opening questions are being answered.
+  useEffect(() => {
+    prefetchBouquet3D();
+  }, []);
   const q = gateQuestions[Math.min(state.gate, TOTAL_GATE - 1)];
   const gating = state.gate < TOTAL_GATE;
 
@@ -24,7 +28,7 @@ export function Scene1({ state, dispatch, config }: SceneProps) {
       <div className={`hero-art ${state.envelopeOpen ? 'open' : 'compact'}`}>
         {!state.envelopeOpen && <Bear size={56} className="bear-bob" />}
         <div className="env-scale">
-          <Envelope open={state.envelopeOpen}>{state.envelopeOpen && <Bouquet />}</Envelope>
+          <Envelope open={state.envelopeOpen}>{state.envelopeOpen && <BouquetAuto />}</Envelope>
         </div>
         <p className="envelope-to">For {config.recipient.nickname}</p>
       </div>

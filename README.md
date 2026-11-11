@@ -31,6 +31,10 @@ Everything personal is in **one file: `src/content/birthday.config.ts`**.
 4. Use `focalPoint` (0 to 1) so faces are not cropped.
 5. Audio goes in `public/assets/audio/`, video in `public/assets/video/`. Music is off by default and only starts after the sound toggle is pressed. Voice notes need a `transcript`; videos should have a captions file.
 
+## 3D graphics (three.js)
+
+The rose bouquet (step 1) and the cake with candles (step 4) are real 3D scenes drawn with three.js: procedural spiral-petal roses and a lit cake with flickering flames, a candle glow, wind-blown flames and rising smoke. three.js (about 133 KB compressed) is split into its own file and only starts downloading after the first opening question, so the first screen stays light. If a device has no WebGL, or the file fails to load, the site automatically falls back to the flat SVG bouquet and cake. With reduced motion on, both draw as still pictures.
+
 ## Background music
 
 `public/assets/audio/romantic-piano.mp3` is an original 90 second instrumental (soft piano and strings) generated with ElevenLabs Music v2.5 through Higgsfield, so there are no third-party song rights to clear. It is off by default, starts only when she taps **Sound: off**, loops quietly, and pauses while a voice note or video plays. To swap it, replace the file (keep it under about 3 MB) or change `media.musicSrc`. To remove music, set `features.music: false`.

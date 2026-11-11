@@ -434,3 +434,11 @@ body {
   .mem-nav { gap: 2px; }
   .letter { max-height: calc(100vh - 270px); max-height: calc(100dvh - 270px); }
 }
+
+/* 3D (three.js) bouquet: same rise as the SVG one, no CSS sway (the scene rotates itself) */
+.bq-gl-wrap { animation: bq-rise 1.4s 0.4s cubic-bezier(0.2, 0.9, 0.25, 1.12) both; }
+.bq-gl, .bq-gl canvas { width: 200px; height: 280px; display: block; }
+
+/* 3D cake and candles */
+.cake-gl, .cake-gl canvas { width: 200px; height: 214px; display: block; }
+.cake-gl-loading { visibility: hidden; }

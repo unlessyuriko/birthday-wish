@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { prefetchCake3D } from '../components/CakeAuto';
 import { Heart } from '../components/Art';
 import { Photo } from '../components/Photo';
 import { SceneHeading } from '../components/ui';
@@ -9,6 +10,9 @@ const FALLBACK_TEASERS = ['Every moment with you is my favourite.', 'You make or
 export function Scene3({ state, dispatch, config }: SceneProps) {
   const total = config.memories.length;
   const [idx, setIdx] = useState(0);
+  useEffect(() => {
+    prefetchCake3D(); // warm up the 3D candles for the next step
+  }, []);
   const go = (n: number) => setIdx((n + total) % total);
   return (
     <section className="scene" aria-label="Evidence">
