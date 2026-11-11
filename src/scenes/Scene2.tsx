@@ -13,8 +13,10 @@ export function Scene2({ state, dispatch }: SceneProps) {
       <p className="eyebrow">Today's very important decisions</p>
       <p className="eyebrow soft">Decision {state.decisionIndex + 1} of {TOTAL_DECISIONS}</p>
       <SceneHeading focusKey={state.decisionIndex}>{d.question}</SceneHeading>
-      <Choices label={d.question} options={d.options} value={value} onPick={(id) => dispatch({ type: 'choosePref', key: d.id, id })} />
-      <Reaction text={picked?.reaction} />
+      <div className="grow">
+        <Choices label={d.question} options={d.options} value={value} onPick={(id) => dispatch({ type: 'choosePref', key: d.id, id })} />
+        <Reaction text={picked?.reaction} />
+      </div>
       {picked && (
         <button type="button" className="btn primary" onClick={() => dispatch({ type: 'next', from: 2 })}>
           {last ? 'On to the evidence' : 'Continue'}

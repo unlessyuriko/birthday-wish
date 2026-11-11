@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { SceneHeading } from '../components/ui';
+import { fitBox, useSize } from '../components/useSize';
 import { cardStyles } from '../content/copy';
 import { buildCardContent, cardFileName, resolveSharePhoto } from '../export/cardContent';
 import { canvasToBlob, loadCardFonts, loadCardPhoto, renderBirthdayCard, type CardPhoto } from '../export/renderBirthdayCard';
@@ -12,6 +13,8 @@ const IN_APP = /FBAN|FBAV|Instagram|Line\/|MicroMessenger|Messenger|Viber|Telegr
 
 export function Scene6({ state, dispatch, config, onReplay }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [previewRef, previewSize] = useSize<HTMLDivElement>();
+  const card = fitBox(previewSize.w, previewSize.h, 16 / 9, 0, 0, 320);
   const [photo, setPhoto] = useState<CardPhoto | undefined>();
   const [ready, setReady] = useState(false);
   const [status, setStatus] = useState<ExportStatus>('idle');
@@ -110,30 +113,35 @@ export function Scene6({ state, dispatch, config, onReplay }: Props) {
     <section className="scene wide" aria-label="Your birthday card">
       <SceneHeading>Made for you. Worth showing off.</SceneHeading>
       <div className="keepsake">
-        <div className="card-preview">
-          <canvas ref={canvasRef} width={1080} height={1920} role="img" aria-label={`Birthday card preview. ${content.altText}`} />
+        <div className="card-preview" ref={previewRef}>
+          <canvas
+            ref={canvasRef}
+            width={1080}
+            height={1920}
+            style={{ width: card.w || undefined, height: card.h || undefined, visibility: card.w ? 'visible' : 'hidden' }}
+            role="img"
+            aria-label={`Birthday card preview. ${content.altText}`}
+          />
         </div>
-        <div className="keepsake-controls">
-          <div role="group" aria-label="Card style" className="style-picker">
-            {cardStyles.map((s) => (
-              <button key={s.id} type="button" className="chip" aria-pressed={style === s.id} onClick={() => dispatch({ type: 'setStyle', style: s.id })}>
-                {s.label}
-              </button>
-            ))}
-          </div>
-          <div className="btn-stack">
-            <button type="button" className="btn primary" onClick={save} disabled={!ready || status === 'preparing'}>
-              {status === 'preparing' ? 'Preparing your card...' : status === 'error' ? 'Try saving again' : 'Save my birthday card'}
+        <div role="group" aria-label="Card style" className="style-picker">
+          {cardStyles.map((s) => (
+            <button key={s.id} type="button" className="chip" aria-label={s.label} aria-pressed={style === s.id} onClick={() => dispatch({ type: 'setStyle', style: s.id })}>
+              {s.short}
             </button>
-            {canShareFiles && ready && (
-              <button type="button" className="btn secondary" onClick={shareCard}>
-                Share my card
-              </button>
-            )}
-            <button type="button" className="btn secondary" onClick={onReplay}>
-              Replay my surprise
+          ))}
+        </div>
+        <div className="keep-actions">
+          <button type="button" className="btn primary small" onClick={save} disabled={!ready || status === 'preparing'}>
+            {status === 'preparing' ? 'Preparing your card...' : status === 'error' ? 'Try saving again' : 'Save my birthday card'}
+          </button>
+          {canShareFiles && ready && (
+            <button type="button" className="btn secondary small icon" aria-label="Share my card" onClick={shareCard}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false"><path d="M12 15V4M8 8l4-4 4 4M5 13v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-6" /></svg>
             </button>
-          </div>
+          )}
+          <button type="button" className="btn secondary small" onClick={onReplay}>
+            Replay my surprise
+          </button>
         </div>
       </div>
       <div role="status" aria-live="polite" className="status">

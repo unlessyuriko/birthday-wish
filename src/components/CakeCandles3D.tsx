@@ -5,6 +5,7 @@ import {
   SpriteMaterial, SRGBColorSpace, TorusGeometry, Vector2, WebGLRenderer,
 } from 'three';
 
+const SMOKE_N = 22;
 const W = 200;
 const H = 214;
 
@@ -203,7 +204,7 @@ export function CakeCandles3D({ level, out, onFail }: Props) {
       ember.visible = false;
       g.add(ember);
       const smoke: Sprite[] = [];
-      for (let k = 0; k < 4; k++) {
+      for (let k = 0; k < SMOKE_N; k++) {
         const s = new Sprite(new SpriteMaterial({ map: smokeTex, transparent: true, depthWrite: false, opacity: 0 }));
         dispose.push(s.material);
         s.visible = false;
@@ -251,16 +252,19 @@ export function CakeCandles3D({ level, out, onFail }: Props) {
         const since = isOut ? t - st.outAt : 0;
         c.ember.visible = isOut && since < 3.2;
         emberMat.opacity = Math.max(0, 1 - since / 3.2);
+        // One continuous wisp: a sine wave that travels upward, widening and fading as it climbs.
+        const fadeIn = isOut ? Math.min(1, Math.max(0, (since - 0.12) / 0.7)) : 0;
         c.smoke.forEach((sp, k) => {
-          if (!isOut) {
-            sp.visible = false;
-            return;
-          }
-          const age = still ? (k + 1) / 5 : (((since - 0.15 - k * 0.7 - i * 0.22) % 2.8) + 2.8) % 2.8 / 2.8;
-          sp.visible = still || since > 0.15 + k * 0.7 * 0.3;
-          sp.position.set(Math.sin(age * 7 + c.seed + k) * 0.06 * age + age * 0.12, 1.04 + age * 0.8, 0.02);
-          sp.scale.setScalar(0.1 + age * 0.26);
-          sp.material.opacity = Math.sin(Math.min(1, age) * Math.PI) * 0.62;
+          sp.visible = isOut && fadeIn > 0.01;
+          if (!sp.visible) return;
+          const q = k / (SMOKE_N - 1); // 0 at the wick, 1 at the top of the wisp
+          const phase = still ? 0 : t * 3.4;
+          const amp = 0.02 + 0.17 * q;
+          const x = Math.sin(q * 9.5 - phase + c.seed) * amp + q * q * 0.1;
+          const breathe = still ? 1 : 0.8 + 0.2 * Math.sin(t * 1.3 + c.seed + q * 3);
+          sp.position.set(x, 1.05 + q * 1.0, 0.02);
+          sp.scale.setScalar(0.075 + q * 0.17);
+          sp.material.opacity = Math.pow(1 - q, 1.25) * 0.62 * fadeIn * breathe;
         });
       });
       hemi.intensity = 0.9 + 0.1 * (1 - lit / 3);

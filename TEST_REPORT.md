@@ -28,6 +28,9 @@ Scene 5 (the application) was removed, so the journey has six scenes. The flip c
 ## 3D bouquet and candles (added)
 Both were rendered with three.js in desktop Chrome (software WebGL) and checked by screenshot: the bouquet after opening, and the cake lit, mid-blow and after the candles are out (flames bend and shrink, then smoke rises). Phone-size fit was re-measured with the 3D scenes enabled (all steps fit on 320x568 to 412x780). The GL path was not checked on real phone GPUs or in WebKit/Firefox; those fall back to the SVG art only when WebGL is missing. Performance on low-end phones is untested. Initial JavaScript is about 61 KB compressed; the three.js chunk (about 133 KB) loads on demand.
 
+## Full-height layout (added)
+The card now fills the screen on phones, with the picture centred in the free space and the main button at the bottom. Memory cards and the step 6 card preview are sized from the measured free space, so any photo shape fits without scrolling. Measured on the production build at 390x844, 390x664, 375x667, 360x640, 412x780 and 320x568: every step, all three flipped memory cards and the last step fit without scrolling (after the entrance animation settles). Emulated viewports, not physical devices.
+
 ## Not verified
 - Real iOS Safari, real Android Chrome, messaging-app browsers, and real download behaviour on mobile devices (the fallback "press and hold to save" path is implemented but untested).
 - Export with a real share photo (none supplied), long names/captions on the card (layout logic is unit-tested, not visually checked).

@@ -75,13 +75,18 @@ export function App() {
           ))}
         </div>
         {musicSrc && (
-          <button type="button" className="sound" aria-pressed={musicWanted} onClick={() => setMusicWanted((v) => !v)}>
-            {musicWanted ? 'Sound: on' : 'Sound: off'}
+          <button type="button" className={`sound ${musicWanted ? 'on' : ''}`} aria-label="Music" aria-pressed={musicWanted} title={musicWanted ? 'Music on. Tap to mute' : 'Music off. Tap to play'} onClick={() => setMusicWanted((v) => !v)}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+              <path d="M9 18V6l10-2v12" />
+              <circle cx="6.5" cy="18" r="2.5" />
+              <circle cx="16.5" cy="16" r="2.5" />
+              {!musicWanted && <path d="M3 3l18 18" strokeWidth="2.6" />}
+            </svg>
           </button>
         )}
       </header>
       {musicSrc && <audio ref={audioRef} src={musicSrc} loop preload="none" />}
-      {musicBlocked && <p className="note" role="status">Your browser blocked the music. Tap the sound button to try again.</p>}
+      {musicBlocked && <p className="note" role="status">Your browser blocked the music. Tap the music button to try again.</p>}
       <main className="stage" key={state.scene}>
         {scene}
       </main>

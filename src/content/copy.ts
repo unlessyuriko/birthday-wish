@@ -89,8 +89,8 @@ export const treats: Record<string, { badge: string; agenda: string }> = {
 export const defaultTreat = treats.cake;
 
 export type StyleId = 'romantic' | 'funny' | 'minimal';
-export const cardStyles: Array<{ id: StyleId; label: string; hint: string }> = [
-  { id: 'romantic', label: 'Soft and romantic', hint: 'Dreamy and tender' },
-  { id: 'funny', label: 'Playful and chic', hint: 'Witty and bold' },
-  { id: 'minimal', label: 'Minimal and elegant', hint: 'Quiet and classic' },
+export const cardStyles: Array<{ id: StyleId; label: string; short: string; hint: string }> = [
+  { id: 'romantic', label: 'Soft and romantic', short: 'Romantic', hint: 'Dreamy and tender' },
+  { id: 'funny', label: 'Playful and chic', short: 'Playful', hint: 'Witty and bold' },
+  { id: 'minimal', label: 'Minimal and elegant', short: 'Minimal', hint: 'Quiet and classic' },
 ];

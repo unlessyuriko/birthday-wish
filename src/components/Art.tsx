@@ -85,7 +85,7 @@ export function Cake({ out, level = 0 }: { out: boolean; level?: number }) {
           )}
           {out && (
             <g className="smoke-group" style={{ animationDelay: `${i * 0.5}s` }}>
-              <path className="smoke" d={`M${x} 46 q-7 -8 0 -15 q7 -8 0 -16 q-6 -7 0 -13`} fill="none" stroke="#70565F" strokeWidth="2.4" strokeLinecap="round" />
+              <path className="smoke" d={`M${x} 46 c-9 -5 -9 -10 0 -14 s9 -9 0 -14 s-9 -8 0 -13`} fill="none" stroke="#70565F" strokeWidth="2.4" strokeLinecap="round" />
             </g>
           )}
         </g>
