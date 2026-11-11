@@ -62,8 +62,8 @@ export function CakeCandles3D({ level, out, onFail }: Props) {
 
     const scene = new Scene();
     const camera = new PerspectiveCamera(30, W / H, 0.1, 50);
-    camera.position.set(0, 2.9, 8.8);
-    camera.lookAt(0, 1.6, 0);
+    camera.position.set(0, 2.7, 8.4);
+    camera.lookAt(0, 1.38, 0);
 
     const hemi = new HemisphereLight(0xffffff, 0xf0b8c8, 1.35);
     scene.add(hemi);
@@ -140,6 +140,7 @@ export function CakeCandles3D({ level, out, onFail }: Props) {
     dispose.push(candleMat);
     const wickMat = std('#2a1a14', 0.8);
     const candleGeo = geo(new CylinderGeometry(0.075, 0.075, 0.95, 20));
+    const dollopGeo = geo(new TorusGeometry(0.1, 0.04, 8, 20));
     const wickGeo = geo(new CylinderGeometry(0.012, 0.012, 0.12, 6));
 
     // Flame: teardrop lathe with a colour gradient from blue base to orange tip.
@@ -174,11 +175,15 @@ export function CakeCandles3D({ level, out, onFail }: Props) {
     const emberGeo = geo(new SphereGeometry(0.03, 8, 6));
     [[-0.5, 0.05], [0, -0.12], [0.5, 0.05]].forEach(([x, z], i) => {
       const g = new Group();
-      g.position.set(x, 1.96, z);
+      g.position.set(x, 1.6, z); // sunk slightly into the top tier so the candle stands on the cake
       scene.add(g);
       const body = new Mesh(candleGeo, candleMat);
       body.position.y = 0.475;
       g.add(body);
+      const dollop = new Mesh(dollopGeo, icing);
+      dollop.rotation.x = Math.PI / 2;
+      dollop.position.y = 0.035;
+      g.add(dollop);
       const wick = new Mesh(wickGeo, wickMat);
       wick.position.y = 0.99;
       g.add(wick);

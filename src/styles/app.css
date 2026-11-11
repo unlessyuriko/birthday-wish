@@ -428,7 +428,7 @@ body {
   .closing { font-size: 1.35rem; }
   .keepsake { gap: 8px; }
   .keepsake .btn { padding: 6px 8px; font-size: 0.85rem; }
-  .chip { padding: 4px 6px; font-size: 0.8rem; min-height: 40px; }
+  .chip { padding: 4px 6px; font-size: 0.8rem; min-height: 44px; }
   .card-preview canvas { max-height: calc(100dvh - 300px); }
   .status:empty { display: none; }
   .mem-nav { gap: 2px; }
